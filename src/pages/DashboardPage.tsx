@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { 
   Scale, 
   Activity, 
@@ -7,7 +7,9 @@ import {
   Zap, 
   CircleDot, 
   ShieldAlert,
-  ArrowRight
+  ArrowRight,
+  User,
+  RefreshCcw
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -71,9 +73,21 @@ export const DashboardPage: React.FC = () => {
 
   const profileName = profile?.name?.split(' ')[0] || 'usuário';
 
+  const dashboardTitle = (
+    <Link 
+      to="/settings" 
+      className="flex items-center gap-2 hover:opacity-70 transition-opacity group"
+    >
+      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+        <User size={18} />
+      </div>
+      <span>{greeting}, {profileName}! 👋</span>
+    </Link>
+  );
+
   if (!loading && (!checkins || checkins.length === 0)) {
     return (
-      <MainLayout title={`${greeting}, ${profileName}! 👋`}>
+      <MainLayout title={dashboardTitle as any}>
         <div className="flex flex-col items-center justify-center py-12 px-6 text-center animate-in fade-in slide-in-from-bottom-4 duration-700">
           <div className="w-48 h-48 bg-primary/5 rounded-full flex items-center justify-center mb-8 relative">
             <motion.div 
@@ -122,7 +136,7 @@ export const DashboardPage: React.FC = () => {
   };
 
   return (
-    <MainLayout title={`${greeting}, ${profileName}! 👋`}>
+    <MainLayout title={dashboardTitle as any}>
       {/* Pull to Refresh Indicator */}
       <div 
         className="flex items-center justify-center overflow-hidden transition-all duration-300"

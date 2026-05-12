@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { Filter } from 'lucide-react';
+import { Filter, X, ChevronDown, ChevronUp, RefreshCcw } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { MainLayout } from '../components/layout/MainLayout';
 import { CheckInTable } from '../components/history/CheckInTable';
 import { CheckIn } from '../types/checkin';
@@ -8,9 +9,8 @@ import { CheckInDetail } from '../components/checkin/CheckInDetail';
 import { CheckInForm } from '../components/checkin/CheckInForm';
 import { useCheckins } from '../hooks/useCheckins';
 import { useAppContext } from '../context/AppContext';
+import { Button } from '../components/ui/Button';
 import clsx from 'clsx';
-
-import { RefreshCcw } from 'lucide-react';
 import { usePullToRefresh } from '../hooks/usePullToRefresh';
 
 export const HistoryPage: React.FC = () => {
@@ -21,6 +21,7 @@ export const HistoryPage: React.FC = () => {
   const [toDate, setToDate] = useState<string>('');
   const [totalCount, setTotalCount] = useState(0);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const { isRefreshing, pullProgress } = usePullToRefresh(async () => {
     setRefreshKey(prev => prev + 1);
@@ -35,6 +36,13 @@ export const HistoryPage: React.FC = () => {
   const [checkinToDelete, setCheckinToDelete] = useState<number | null>(null);
   const [hiddenIds, setHiddenIds] = useState<number[]>([]);
   const deleteTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const hasActiveFilters = fromDate !== '' || toDate !== '';
+
+  const clearFilters = () => {
+    setFromDate('');
+    setToDate('');
+  };
 
   const handleRowClick = (checkin: CheckIn) => {
     setSelectedCheckin(checkin);
@@ -101,7 +109,23 @@ export const HistoryPage: React.FC = () => {
   };
 
   return (
-    <MainLayout title="Histórico">
+    <MainLayout 
+      title="Histórico"
+      headerRightAction={
+        <button
+          onClick={() => setIsFilterOpen(!isFilterOpen)}
+          className={clsx(
+            "relative p-2 rounded-full transition-colors",
+            isFilterOpen ? "bg-primary text-white" : "text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+          )}
+        >
+          <Filter size={20} />
+          {hasActiveFilters && (
+            <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-danger border-2 border-white dark:border-slate-900 rounded-full" />
+          )}
+        </button>
+      }
+    >
       {/* Pull to Refresh Indicator */}
       <div 
         className="flex items-center justify-center overflow-hidden transition-all duration-300"
@@ -116,38 +140,63 @@ export const HistoryPage: React.FC = () => {
       </div>
 
       <div className="space-y-4">
-        {/* Filters Area */}
-        <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2 text-slate-900 dark:text-white font-bold">
-              <Filter className="w-4 h-4 text-primary" />
-              <span>Filtros</span>
-            </div>
-            <span className="text-xs text-slate-500 font-medium">
-              {totalCount} {totalCount === 1 ? 'registro' : 'registros'}
-            </span>
-          </div>
+        {/* Collapsible Filters Area */}
+        <AnimatePresence>
+          {isFilterOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="overflow-hidden"
+            >
+              <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 mb-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2 text-slate-900 dark:text-white font-bold text-sm">
+                    <Filter className="w-4 h-4 text-primary" />
+                    <span>Filtrar Período</span>
+                  </div>
+                  {hasActiveFilters && (
+                    <button 
+                      onClick={clearFilters}
+                      className="text-[10px] font-bold text-primary uppercase tracking-wider px-2 py-1 bg-primary/10 rounded-md"
+                    >
+                      Limpar
+                    </button>
+                  )}
+                </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1">
-              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">De</label>
-              <input
-                type="date"
-                value={fromDate}
-                onChange={(e) => setFromDate(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">Até</label>
-              <input
-                type="date"
-                value={toDate}
-                onChange={(e) => setToDate(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
-              />
-            </div>
-          </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">De</label>
+                    <input
+                      type="date"
+                      value={fromDate}
+                      onChange={(e) => setFromDate(e.target.value)}
+                      className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">Até</label>
+                    <input
+                      type="date"
+                      value={toDate}
+                      onChange={(e) => setToDate(e.target.value)}
+                      className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                    />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div className="flex items-center justify-between px-1">
+          <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">
+            {hasActiveFilters ? 'Resultados Filtrados' : 'Todos os Registros'}
+          </span>
+          <span className="text-xs text-slate-400 font-medium">
+            {totalCount} {totalCount === 1 ? 'registro' : 'registros'}
+          </span>
         </div>
 
         {/* Table Content */}

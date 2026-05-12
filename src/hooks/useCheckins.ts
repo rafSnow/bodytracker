@@ -34,6 +34,10 @@ export function useCheckins() {
     return await db.checkins.get(id);
   };
 
+  const getLatestCheckin = async () => {
+    return await db.checkins.orderBy('date').reverse().first();
+  };
+
   const getCheckinsInRange = async (from: Date, to: Date) => {
     return await db.checkins
       .where('date')
@@ -90,6 +94,7 @@ export function useCheckins() {
     updateCheckin,
     deleteCheckin,
     getCheckinById,
+    getLatestCheckin,
     getCheckinsInRange,
     getPaginatedCheckins,
   };

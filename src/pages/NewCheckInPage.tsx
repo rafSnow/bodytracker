@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 import { MainLayout } from '../components/layout/MainLayout';
@@ -11,10 +11,25 @@ import { Photo } from '../types/photo';
 
 export const NewCheckInPage: React.FC = () => {
   const navigate = useNavigate();
-  const { addCheckin } = useCheckins();
+  const { addCheckin, getLatestCheckin } = useCheckins();
   const { addPhoto } = usePhotos();
   const { showToast } = useAppContext();
   const [loading, setLoading] = useState(false);
+  const [prefillData, setPrefillData] = useState<Partial<CheckIn> | null>(null);
+
+  useEffect(() => {
+    const loadLatest = async () => {
+      const latest = await getLatestCheckin();
+      if (latest) {
+        // Pre-fill measurements but NOT date or weight
+        const { id, date, weightKg, createdAt, updatedAt, notes, ...measurements } = latest;
+        setPrefillData(measurements);
+      } else {
+        setPrefillData({});
+      }
+    };
+    loadLatest();
+  }, [getLatestCheckin]);
 
   const handleSubmit = async (
     data: Omit<CheckIn, 'id' | 'createdAt' | 'updatedAt'>,
@@ -49,6 +64,16 @@ export const NewCheckInPage: React.FC = () => {
     }
   };
 
+  if (!prefillData) {
+    return (
+      <MainLayout title="Novo registro" showBottomNav={false} showFAB={false}>
+        <div className="flex items-center justify-center py-20">
+          <div className="animate-pulse text-primary font-bold">Preparando formulário...</div>
+        </div>
+      </MainLayout>
+    );
+  }
+
   return (
     <MainLayout
       title="Novo registro"
@@ -64,7 +89,11 @@ export const NewCheckInPage: React.FC = () => {
       }
     >
       <div className="max-w-md mx-auto py-6">
-        <CheckInForm onSubmit={handleSubmit} isLoading={loading} />
+        <CheckInForm 
+          onSubmit={handleSubmit} 
+          isLoading={loading} 
+          initialValues={prefillData}
+        />
       </div>
     </MainLayout>
   );

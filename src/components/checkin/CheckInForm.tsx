@@ -53,7 +53,12 @@ export const CheckInForm: React.FC<CheckInFormProps> = ({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [sections, setSections] = useState({
     essential: true,
-    additional: false,
+    additional: !!(
+      initialValues?.forearmCm || 
+      initialValues?.wristCm || 
+      initialValues?.thighCm || 
+      initialValues?.calfCm
+    ),
     photos: true,
   });
 
