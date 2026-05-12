@@ -24,5 +24,4 @@ dist-ssr
 *.sw?
 docs
 .vscode
-package-lock.json
 .env
