@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Filter, X, ChevronDown, ChevronUp, RefreshCcw } from 'lucide-react';
+import { Filter, RefreshCcw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MainLayout } from '../components/layout/MainLayout';
 import { CheckInTable } from '../components/history/CheckInTable';
@@ -9,7 +9,6 @@ import { CheckInDetail } from '../components/checkin/CheckInDetail';
 import { CheckInForm } from '../components/checkin/CheckInForm';
 import { useCheckins } from '../hooks/useCheckins';
 import { useAppContext } from '../context/AppContext';
-import { Button } from '../components/ui/Button';
 import clsx from 'clsx';
 import { usePullToRefresh } from '../hooks/usePullToRefresh';
 

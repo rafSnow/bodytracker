@@ -28,7 +28,6 @@ import { detectAlerts } from '../lib/alertsEngine';
 import clsx from 'clsx';
 
 import { usePullToRefresh } from '../hooks/usePullToRefresh';
-import { RefreshCcw } from 'lucide-react';
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
