@@ -63,28 +63,33 @@ function PrivateRoutes() {
 
         {/* Configurações (Ajustes) */}
         <Route path="/settings">
-          <div className="p-4 flex flex-col gap-6">
-            <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 mb-2">
-              <h2 className="text-2xl font-bold text-slate-800 mb-1">Configurações</h2>
-              <p className="text-slate-500 text-sm">Gerencie seus dados locais</p>
+          <div className="flex flex-col h-full w-full bg-[#F2F2F7] min-h-screen pb-24">
+            <div className="sticky top-0 z-30 bg-[#F2F2F7]/80 backdrop-blur-xl pt-12 pb-4 px-4 border-b border-slate-200/50">
+              <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Ajustes</h1>
             </div>
             
-            <DataBackupManager />
-            
-            <div className="bg-white border border-rose-100 rounded-3xl shadow-sm p-6 flex flex-col gap-4">
-              <h3 className="font-semibold text-slate-800">Sair da Conta</h3>
-              <p className="text-sm text-slate-500">Ao sair, os dados continuam no navegador (Dexie.js), mas você precisará recriar o perfil de acesso.</p>
-              <button 
-                onClick={() => {
-                  if (window.confirm('Tem certeza que deseja sair?')) {
-                    logout();
-                  }
-                }}
-                className="flex items-center justify-center gap-2 h-14 bg-rose-50 text-rose-600 font-medium rounded-2xl hover:bg-rose-100 active:scale-[0.98] transition-all"
-              >
-                <LogOut size={20} />
-                Sair do Aplicativo
-              </button>
+            <div className="p-4 flex flex-col gap-6 mt-2">
+              <DataBackupManager />
+              
+              <div className="bg-white rounded-[10px] shadow-sm border border-slate-200/60 overflow-hidden">
+                <div className="p-4 flex flex-col gap-2">
+                  <h3 className="font-semibold text-slate-900 text-[17px]">Sair da Conta</h3>
+                  <p className="text-[14px] text-slate-500 leading-snug">Ao sair, os dados continuam no navegador (Dexie.js), mas você precisará recriar o perfil de acesso.</p>
+                </div>
+                <div className="border-t border-slate-100">
+                  <button 
+                    onClick={() => {
+                      if (window.confirm('Tem certeza que deseja sair?')) {
+                        logout();
+                      }
+                    }}
+                    className="w-full flex items-center justify-center gap-2 py-3.5 bg-white text-red-500 font-medium hover:bg-slate-50 active:bg-slate-100 transition-colors text-[17px]"
+                  >
+                    <LogOut size={20} />
+                    Sair do Aplicativo
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </Route>

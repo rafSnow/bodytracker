@@ -16,7 +16,7 @@ export function Layout({ children }: LayoutProps) {
   const isClients = !isSettings;
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 selection:bg-indigo-100 selection:text-indigo-900 flex flex-col">
+    <div className="min-h-screen bg-[#F2F2F7] font-sans text-slate-900 selection:bg-indigo-100 selection:text-indigo-900 flex flex-col">
       <OfflineIndicator />
       <LegalDisclaimerModal />
       
@@ -25,9 +25,9 @@ export function Layout({ children }: LayoutProps) {
         {children}
       </main>
 
-      {/* Bottom Navigation Bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 pb-safe">
-        <div className="flex items-center justify-around h-16 max-w-md mx-auto px-4">
+      {/* iOS Bottom Navigation Bar */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/85 backdrop-blur-xl border-t border-slate-200/60 pb-safe">
+        <div className="flex items-center justify-around h-[83px] pb-5 pt-2 max-w-md mx-auto px-4">
           <button 
             onClick={() => setLocation('/')}
             className={`flex flex-col items-center justify-center w-full h-full gap-1 transition-colors ${

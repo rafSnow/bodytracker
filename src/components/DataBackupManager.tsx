@@ -96,34 +96,35 @@ export function DataBackupManager() {
   };
 
   return (
-    <div className="w-full bg-white border border-slate-100 rounded-3xl shadow-sm p-6 mb-6">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="p-3 bg-slate-100 text-slate-700 rounded-2xl">
-          <DownloadCloud size={24} />
-        </div>
-        <div>
-          <h2 className="text-lg font-semibold text-slate-800">Backup e Restauração</h2>
-          <p className="text-sm text-slate-500">Exporte seus dados para não perdê-los.</p>
-        </div>
+    <div className="w-full bg-white rounded-[10px] shadow-sm border border-slate-200/60 overflow-hidden">
+      <div className="p-4 flex flex-col gap-2">
+        <h2 className="font-semibold text-slate-900 text-[17px]">Backup de Dados</h2>
+        <p className="text-[14px] text-slate-500 leading-snug">Salve uma cópia de segurança dos seus pacientes no seu dispositivo ou restaure dados antigos.</p>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-4 mt-6">
+      <div className="flex flex-col border-t border-slate-100">
         <button
           onClick={handleExportData}
           disabled={isExporting || isImporting}
-          className="flex-1 flex items-center justify-center gap-2 h-14 bg-slate-800 text-white font-medium rounded-2xl hover:bg-slate-900 active:scale-[0.98] transition-all disabled:opacity-50"
+          className="w-full flex items-center justify-between px-4 py-3.5 bg-white text-indigo-600 font-medium hover:bg-slate-50 active:bg-slate-100 transition-colors text-[17px] disabled:opacity-50"
         >
-          <DownloadCloud size={20} />
-          Exportar JSON
+          <span className="flex items-center gap-3">
+            <DownloadCloud size={20} />
+            Exportar Backup (JSON)
+          </span>
         </button>
+
+        <div className="h-[1px] bg-slate-100 ml-4"></div>
 
         <button
           onClick={() => fileInputRef.current?.click()}
           disabled={isExporting || isImporting}
-          className="flex-1 flex items-center justify-center gap-2 h-14 bg-white border border-slate-200 text-slate-700 font-medium rounded-2xl hover:bg-slate-50 hover:border-slate-300 active:scale-[0.98] transition-all disabled:opacity-50"
+          className="w-full flex items-center justify-between px-4 py-3.5 bg-white text-indigo-600 font-medium hover:bg-slate-50 active:bg-slate-100 transition-colors text-[17px] disabled:opacity-50"
         >
-          <UploadCloud size={20} />
-          Importar JSON
+          <span className="flex items-center gap-3">
+            <UploadCloud size={20} />
+            Importar Backup (JSON)
+          </span>
         </button>
         <input 
           type="file" 
@@ -135,11 +136,11 @@ export function DataBackupManager() {
       </div>
 
       {message && (
-        <div className={`mt-4 p-4 rounded-2xl flex items-center gap-3 ${
-          message.type === 'success' ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'
+        <div className={`p-4 border-t border-slate-100 flex items-center gap-3 ${
+          message.type === 'success' ? 'bg-emerald-50/50 text-emerald-600' : 'bg-red-50/50 text-red-500'
         }`}>
           {message.type === 'success' ? <CheckCircle2 size={20} /> : <AlertTriangle size={20} />}
-          <span className="text-sm font-medium">{message.text}</span>
+          <span className="text-[14px] font-medium">{message.text}</span>
         </div>
       )}
     </div>
