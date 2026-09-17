@@ -1,4 +1,5 @@
-import { Switch, Route, useLocation } from 'wouter';
+import { Switch, Route, useLocation, Router } from 'wouter';
+import { useHashLocation } from 'wouter/use-hash-location';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { Layout } from './components/Layout';
 import { ProfessionalProfile } from './components/ProfessionalProfile';
@@ -129,7 +130,9 @@ function AppContent() {
 export default function App() {
   return (
     <AuthProvider>
-      <AppContent />
+      <Router hook={useHashLocation}>
+        <AppContent />
+      </Router>
     </AuthProvider>
   );
 }
