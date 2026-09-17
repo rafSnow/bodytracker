@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import html2canvas from 'html2canvas';
+import { toJpeg } from 'html-to-image';
 import { jsPDF } from 'jspdf';
 import { Download, Loader2 } from 'lucide-react';
 
@@ -21,18 +21,24 @@ export function ExportPDFButton({ elementId, fileName = 'relatorio-avaliacao.pdf
     setIsExporting(true);
     
     try {
-      // Configuracoes robustas para lidar com React/Tailwind/SVGs
-      const canvas = await html2canvas(element, { 
-        scale: 2, 
-        useCORS: true, 
-        allowTaint: true,
-        logging: true, // Habilitar temporariamente para ver os logs de renderização se falhar
+      const pixelRatio = 2;
+      
+      // html-to-image resolve o problema do CSS "oklch" nativamente pois usa o renderizador do browser
+      const imgData = await toJpeg(element, { 
+        quality: 0.95,
         backgroundColor: '#ffffff',
-        windowWidth: element.scrollWidth,
-        windowHeight: element.scrollHeight
+        pixelRatio: pixelRatio,
+        filter: (node: HTMLElement) => {
+          // Ignorar elementos com a tag de ignore do html2canvas/html-to-image
+          if (node?.getAttribute && node.getAttribute('data-html2canvas-ignore') === 'true') {
+            return false;
+          }
+          return true;
+        }
       });
       
-      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      const canvasWidth = element.scrollWidth * pixelRatio;
+      const canvasHeight = element.scrollHeight * pixelRatio;
       
       // Criar PDF (A4 - retrato, usando jsPDF)
       const pdf = new jsPDF('p', 'mm', 'a4');
@@ -40,7 +46,7 @@ export function ExportPDFButton({ elementId, fileName = 'relatorio-avaliacao.pdf
       const pdfHeight = pdf.internal.pageSize.getHeight();
       
       const imgWidth = pdfWidth;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const imgHeight = (canvasHeight * imgWidth) / canvasWidth;
       
       let heightLeft = imgHeight;
       let position = 0;
