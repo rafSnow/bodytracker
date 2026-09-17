@@ -275,11 +275,11 @@ function InputGroup({
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       <input
-        type="number"
+        type="text"
         inputMode="decimal"
-        step="0.1"
+        pattern="[0-9.,]*"
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value.replace(/[^0-9.,]/g, '').replace(',', '.'))}
         required={required}
         placeholder="0.0"
         className="w-full h-14 px-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-800"

@@ -106,10 +106,11 @@ export function ClientForm({ profissionalId, onSuccess, onCancel }: ClientFormPr
               <label htmlFor="altura" className="text-sm font-medium text-slate-700 ml-1">Altura (cm)</label>
               <input
                 id="altura"
-                type="number"
+                type="text"
                 inputMode="decimal"
+                pattern="[0-9.,]*"
                 value={altura}
-                onChange={(e) => setAltura(e.target.value)}
+                onChange={(e) => setAltura(e.target.value.replace(',', '.'))}
                 placeholder="Ex: 175"
                 required
                 className="w-full h-14 px-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
