@@ -105,7 +105,7 @@ interface ReportPDFDocumentProps {
 }
 
 export const ReportPDFDocument = ({ cliente, avaliacao, resultado }: ReportPDFDocumentProps) => {
-  const c = resultado.calculos;
+  const c = resultado?.calculos || {};
 
   const formatDate = (date: Date) => format(date, "dd 'de' MMMM 'de' yyyy", { locale: ptBR });
   
@@ -198,15 +198,15 @@ export const ReportPDFDocument = ({ cliente, avaliacao, resultado }: ReportPDFDo
               <Text style={styles.label}>Gasto Energético (TDEE)</Text>
               <Text style={styles.value}>{c.tdee ? `${c.tdee.toFixed(0)} kcal` : '--'}</Text>
             </View>
-            {c.metaCalorica && (
+            {Boolean(c.metaCalorica) && (
               <View style={styles.card}>
                 <Text style={styles.label}>Meta Diária de Calorias</Text>
-                <Text style={{...styles.value, color: '#16a34a'}}>{c.metaCalorica.toFixed(0)} kcal</Text>
+                <Text style={[styles.value, { color: '#16a34a' }]}>{c.metaCalorica.toFixed(0)} kcal</Text>
               </View>
             )}
           </View>
           
-          {c.macros && (
+          {Boolean(c.macros) && (
             <View style={{ marginTop: 10, padding: 10, backgroundColor: '#f8fafc', borderRadius: 4 }}>
               <Text style={{ fontSize: 10, fontWeight: 'bold', marginBottom: 8, color: '#475569' }}>Sugestão de Macronutrientes:</Text>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>

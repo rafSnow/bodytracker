@@ -31,7 +31,6 @@ export function ExportPDFButton({
       // Gera o documento PDF premium em memória (blob)
       const doc = <ReportPDFDocument cliente={cliente} avaliacao={avaliacao} resultado={resultado} />;
       const asPdf = pdf(doc);
-      asPdf.updateContainer(doc); // forca a criacao
       const blob = await asPdf.toBlob();
       
       // Cria URL local e dispara o download
