@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { db } from '../db/db';
-import { UserPlus, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 interface ClientFormProps {
@@ -43,90 +43,93 @@ export function ClientForm({ profissionalId, onSuccess, onCancel }: ClientFormPr
   };
 
   return (
-    <div className="flex flex-col min-h-screen p-4 pb-24 bg-slate-50">
-      <div className="flex items-center mb-6 gap-3">
-        <button 
-          onClick={onCancel}
-          className="p-3 bg-white border border-slate-200 rounded-full text-slate-600 active:bg-slate-100 transition-colors"
-        >
-          <ArrowLeft size={20} />
-        </button>
-        <h1 className="text-xl font-semibold text-slate-800">Novo Cliente</h1>
+    <div className="flex flex-col min-h-screen bg-[#F2F2F7]">
+      {/* HIG Header */}
+      <div className="sticky top-0 z-10 bg-[#F2F2F7]/80 backdrop-blur-xl border-b border-slate-200/50">
+        <div className="flex items-center justify-between px-4 h-14">
+          <button 
+            onClick={onCancel}
+            className="flex items-center justify-center min-h-[44px] min-w-[44px] -ml-2 text-indigo-600 active:opacity-70 transition-opacity"
+            aria-label="Voltar"
+          >
+            <ArrowLeft size={24} />
+          </button>
+          <h1 className="text-[17px] font-semibold text-slate-900">Novo Paciente</h1>
+          <div className="w-11"></div>
+        </div>
       </div>
 
-      <div className="w-full bg-white border border-slate-100 rounded-3xl shadow-sm p-6">
-        <div className="flex items-center gap-3 mb-6 pb-6 border-b border-slate-100">
-          <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl">
-            <UserPlus size={24} />
-          </div>
+      <div className="p-4 pb-24">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+          
           <div>
-            <h2 className="font-medium text-slate-800">Dados Pessoais</h2>
-            <p className="text-sm text-slate-500">Informações base para os cálculos</p>
-          </div>
-        </div>
+            <h2 className="text-[13px] font-medium text-slate-500 uppercase tracking-wider ml-4 mb-2">Dados Pessoais</h2>
+            <div className="bg-white rounded-[10px] overflow-hidden shadow-sm border border-slate-200/60 divide-y divide-slate-100">
+              <div className="flex items-center min-h-[44px] px-4 py-2">
+                <label htmlFor="nome" className="text-[17px] text-slate-900 w-1/3 shrink-0">Nome</label>
+                <input
+                  id="nome"
+                  type="text"
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                  placeholder="Nome Completo"
+                  required
+                  className="flex-1 w-full text-[17px] text-slate-900 text-right bg-transparent outline-none placeholder:text-slate-400"
+                />
+              </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="nome" className="text-sm font-medium text-slate-700 ml-1">Nome Completo</label>
-            <input
-              id="nome"
-              type="text"
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
-              placeholder="Ex: João da Silva"
-              required
-              className="w-full h-14 px-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
-            />
-          </div>
+              <div className="flex items-center min-h-[44px] px-4 py-2">
+                <label htmlFor="nascimento" className="text-[17px] text-slate-900 w-1/3 shrink-0">Nascimento</label>
+                <input
+                  id="nascimento"
+                  type="date"
+                  value={dataNascimento}
+                  onChange={(e) => setDataNascimento(e.target.value)}
+                  required
+                  className="flex-1 w-full text-[17px] text-slate-900 text-right bg-transparent outline-none appearance-none"
+                />
+              </div>
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="nascimento" className="text-sm font-medium text-slate-700 ml-1">Data de Nascimento</label>
-            <input
-              id="nascimento"
-              type="date"
-              value={dataNascimento}
-              onChange={(e) => setDataNascimento(e.target.value)}
-              required
-              className="w-full h-14 px-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-slate-800"
-            />
-          </div>
+              <div className="flex items-center min-h-[44px] px-4 py-2">
+                <label htmlFor="sexo" className="text-[17px] text-slate-900 w-1/3 shrink-0">Sexo</label>
+                <select
+                  id="sexo"
+                  value={sexo}
+                  onChange={(e) => setSexo(e.target.value as 'M' | 'F')}
+                  className="flex-1 w-full text-[17px] text-slate-900 text-right bg-transparent outline-none appearance-none pr-0"
+                  dir="rtl"
+                >
+                  <option value="M">Masculino</option>
+                  <option value="F">Feminino</option>
+                </select>
+              </div>
 
-          <div className="flex gap-4">
-            <div className="flex flex-col gap-1 flex-1">
-              <label htmlFor="sexo" className="text-sm font-medium text-slate-700 ml-1">Sexo Biológico</label>
-              <select
-                id="sexo"
-                value={sexo}
-                onChange={(e) => setSexo(e.target.value as 'M' | 'F')}
-                className="w-full h-14 px-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all text-slate-800 appearance-none"
-              >
-                <option value="M">Masculino</option>
-                <option value="F">Feminino</option>
-              </select>
-            </div>
-
-            <div className="flex flex-col gap-1 flex-1">
-              <label htmlFor="altura" className="text-sm font-medium text-slate-700 ml-1">Altura (cm)</label>
-              <input
-                id="altura"
-                type="text"
-                inputMode="decimal"
-                pattern="[0-9.,]*"
-                value={altura}
-                onChange={(e) => setAltura(e.target.value.replace(',', '.'))}
-                placeholder="Ex: 175"
-                required
-                className="w-full h-14 px-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
-              />
+              <div className="flex items-center min-h-[44px] px-4 py-2">
+                <label htmlFor="altura" className="text-[17px] text-slate-900 w-1/3 shrink-0">Altura</label>
+                <div className="flex-1 flex items-center justify-end gap-1">
+                  <input
+                    id="altura"
+                    type="text"
+                    inputMode="decimal"
+                    pattern="[0-9.,]*"
+                    value={altura}
+                    onChange={(e) => setAltura(e.target.value.replace(',', '.'))}
+                    placeholder="175"
+                    required
+                    className="w-16 text-[17px] text-slate-900 text-right bg-transparent outline-none placeholder:text-slate-400"
+                  />
+                  <span className="text-[17px] text-slate-400">cm</span>
+                </div>
+              </div>
             </div>
           </div>
 
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full h-14 mt-4 font-medium text-white bg-emerald-600 rounded-2xl shadow-sm hover:bg-emerald-700 focus:ring-4 focus:ring-emerald-500/20 active:scale-[0.98] transition-all disabled:opacity-50"
+            className="mt-4 flex items-center justify-center w-full h-14 bg-indigo-600 text-white font-semibold text-[17px] rounded-xl shadow-sm hover:bg-indigo-700 active:scale-95 transition-all disabled:opacity-50"
           >
-            {isSubmitting ? 'Salvando...' : 'Cadastrar Cliente'}
+            {isSubmitting ? 'Salvando...' : 'Salvar Paciente'}
           </button>
         </form>
       </div>

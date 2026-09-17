@@ -20,7 +20,7 @@ import {
   calculateCI,
   type Objetivo
 } from '../utils/calculator';
-import { Activity, ArrowLeft, Camera } from 'lucide-react';
+import { ArrowLeft, Camera } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 interface EvaluationFormProps {
@@ -171,103 +171,115 @@ export function EvaluationForm({ clienteId, onSuccess, onCancel }: EvaluationFor
   if (!cliente) {
     return (
       <div className="flex flex-col w-full min-h-screen bg-[#F2F2F7] animate-pulse">
-        <div className="sticky top-0 z-30 bg-[#F2F2F7]/80 backdrop-blur-xl border-b border-slate-200/50 pt-12 pb-3 px-2 flex items-center justify-between">
-          <div className="w-16 h-6 bg-slate-200 rounded-md ml-2" />
-          <div className="w-32 h-6 bg-slate-200 rounded-md" />
-          <div className="w-16 h-6 bg-slate-200 rounded-md mr-2" />
+        <div className="sticky top-0 z-30 bg-[#F2F2F7]/80 backdrop-blur-xl border-b border-slate-200/50">
+          <div className="flex items-center justify-between px-4 h-14">
+            <div className="w-8 h-8 bg-slate-200 rounded-full" />
+            <div className="w-32 h-6 bg-slate-200 rounded-md" />
+            <div className="w-8 h-8 bg-transparent" />
+          </div>
         </div>
         <div className="px-4 py-6 flex flex-col gap-6">
           <div className="bg-white rounded-[10px] border border-slate-200/60 p-4 h-48" />
-          <div className="bg-white rounded-[10px] border border-slate-200/60 p-4 h-64" />
+          <div className="bg-white rounded-[10px] border border-slate-200/60 p-4 h-32" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50 p-4 pb-24">
-      <div className="flex items-center mb-6 gap-3">
-        <button 
-          onClick={onCancel}
-          className="p-3 bg-white border border-slate-200 rounded-full text-slate-600 active:bg-slate-100 transition-colors"
-        >
-          <ArrowLeft size={20} />
-        </button>
-        <h1 className="text-xl font-semibold text-slate-800">Nova Avaliação</h1>
+    <div className="flex flex-col min-h-screen bg-[#F2F2F7]">
+      {/* HIG Header */}
+      <div className="sticky top-0 z-10 bg-[#F2F2F7]/80 backdrop-blur-xl border-b border-slate-200/50">
+        <div className="flex items-center justify-between px-4 h-14">
+          <button 
+            onClick={onCancel}
+            className="flex items-center justify-center min-h-[44px] min-w-[44px] -ml-2 text-indigo-600 active:opacity-70 transition-opacity"
+            aria-label="Voltar"
+          >
+            <ArrowLeft size={24} />
+          </button>
+          <h1 className="text-[17px] font-semibold text-slate-900 truncate px-2">{cliente.nome.split(' ')[0]} - Nova Avaliação</h1>
+          <div className="w-11"></div>
+        </div>
       </div>
 
-      <div className="w-full bg-white border border-slate-100 rounded-3xl shadow-sm p-6">
-        <div className="flex items-center gap-3 mb-6 pb-6 border-b border-slate-100">
-          <div className="p-3 bg-indigo-50 text-indigo-600 rounded-2xl">
-            <Activity size={24} />
-          </div>
-          <div>
-            <h2 className="font-medium text-slate-800">{cliente.nome}</h2>
-            <p className="text-sm text-slate-500">Insira as medidas atuais</p>
-          </div>
-        </div>
-
+      <div className="p-4 pb-24">
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-          <div className="grid grid-cols-2 gap-4">
-            <InputGroup label="Peso (kg)" value={peso} onChange={setPeso} required />
-            <InputGroup label="Pescoço (cm)" value={pescoco} onChange={setPescoco} />
-            <InputGroup label="Cintura (cm)" value={cintura} onChange={setCintura} required />
-            <InputGroup label="Quadril (cm)" value={quadril} onChange={setQuadril} />
-            <InputGroup label="Abdômen (cm)" value={abdomen} onChange={setAbdomen} />
-            <InputGroup label="Braço (cm)" value={braco} onChange={setBraco} />
-            <InputGroup label="Coxa (cm)" value={coxa} onChange={setCoxa} />
-            <InputGroup label="Panturrilha (cm)" value={panturrilha} onChange={setPanturrilha} />
-          </div>
-
-          <div className="flex flex-col gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-100">
-            <h3 className="font-semibold text-slate-700 text-sm">Metabolismo e Metas</h3>
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-slate-600 ml-1">Nível de Atividade</label>
-              <select
-                value={nivelAtividade}
-                onChange={(e) => setNivelAtividade(e.target.value)}
-                className="w-full h-14 px-4 bg-white border border-slate-200 rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-800"
-              >
-                <option value="1.2">Sedentário (Pouco ou nenhum exercício)</option>
-                <option value="1.375">Levemente Ativo (Exercício leve 1-3 dias/sem)</option>
-                <option value="1.55">Moderadamente Ativo (Exercício 3-5 dias/sem)</option>
-                <option value="1.725">Muito Ativo (Exercício pesado 6-7 dias/sem)</option>
-                <option value="1.9">Extremamente Ativo (Treino pesado, trabalho físico)</option>
-              </select>
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-slate-600 ml-1">Objetivo Nutricional</label>
-              <select
-                value={objetivo}
-                onChange={(e) => setObjetivo(e.target.value as Objetivo)}
-                className="w-full h-14 px-4 bg-white border border-slate-200 rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-800"
-              >
-                <option value="emagrecimento">Emagrecimento (-500 kcal)</option>
-                <option value="manutencao">Manutenção (TDEE exato)</option>
-                <option value="hipertrofia">Hipertrofia (+300 kcal)</option>
-              </select>
+          
+          {/* Medidas Corporais */}
+          <div>
+            <h2 className="text-[13px] font-medium text-slate-500 uppercase tracking-wider ml-4 mb-2">Medidas Corporais</h2>
+            <div className="bg-white rounded-[10px] overflow-hidden shadow-sm border border-slate-200/60 divide-y divide-slate-100">
+              <InputRow label="Peso" value={peso} onChange={setPeso} required unit="kg" />
+              <InputRow label="Pescoço" value={pescoco} onChange={setPescoco} unit="cm" />
+              <InputRow label="Cintura" value={cintura} onChange={setCintura} required unit="cm" />
+              <InputRow label="Quadril" value={quadril} onChange={setQuadril} unit="cm" />
+              <InputRow label="Abdômen" value={abdomen} onChange={setAbdomen} unit="cm" />
+              <InputRow label="Braço" value={braco} onChange={setBraco} unit="cm" />
+              <InputRow label="Coxa" value={coxa} onChange={setCoxa} unit="cm" />
+              <InputRow label="Panturrilha" value={panturrilha} onChange={setPanturrilha} unit="cm" />
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-100">
-            <div className="flex items-center gap-2 mb-2">
-              <Camera size={18} className="text-slate-500" />
-              <h3 className="font-semibold text-slate-700 text-sm">Galeria de Evolução (Opcional)</h3>
+          {/* Metabolismo e Metas */}
+          <div>
+            <h2 className="text-[13px] font-medium text-slate-500 uppercase tracking-wider ml-4 mb-2">Metabolismo e Metas</h2>
+            <div className="bg-white rounded-[10px] overflow-hidden shadow-sm border border-slate-200/60 divide-y divide-slate-100">
+              
+              <div className="flex items-center min-h-[44px] px-4 py-2">
+                <label className="text-[17px] text-slate-900 w-1/3 shrink-0">Atividade</label>
+                <select
+                  value={nivelAtividade}
+                  onChange={(e) => setNivelAtividade(e.target.value)}
+                  className="flex-1 w-full text-[17px] text-slate-900 text-right bg-transparent outline-none appearance-none pr-0"
+                  dir="rtl"
+                >
+                  <option value="1.2">Sedentário (Pouco/Nenhum)</option>
+                  <option value="1.375">Leve (1-3 dias/sem)</option>
+                  <option value="1.55">Moderado (3-5 dias/sem)</option>
+                  <option value="1.725">Muito (6-7 dias/sem)</option>
+                  <option value="1.9">Extremo (Trabalho físico)</option>
+                </select>
+              </div>
+
+              <div className="flex items-center min-h-[44px] px-4 py-2">
+                <label className="text-[17px] text-slate-900 w-1/3 shrink-0">Objetivo</label>
+                <select
+                  value={objetivo}
+                  onChange={(e) => setObjetivo(e.target.value as Objetivo)}
+                  className="flex-1 w-full text-[17px] text-slate-900 text-right bg-transparent outline-none appearance-none pr-0"
+                  dir="rtl"
+                >
+                  <option value="emagrecimento">Emagrecimento</option>
+                  <option value="manutencao">Manutenção</option>
+                  <option value="hipertrofia">Hipertrofia</option>
+                </select>
+              </div>
+
             </div>
-            <div className="grid grid-cols-3 gap-3">
-              <PhotoUploader label="Frente" photo={fotoFrente} onSelect={(e) => handlePhotoSelect(e, 'frente')} onClear={() => setFotoFrente(null)} />
-              <PhotoUploader label="Lado" photo={fotoLado} onSelect={(e) => handlePhotoSelect(e, 'lado')} onClear={() => setFotoLado(null)} />
-              <PhotoUploader label="Costas" photo={fotoCostas} onSelect={(e) => handlePhotoSelect(e, 'costas')} onClear={() => setFotoCostas(null)} />
+          </div>
+
+          {/* Galeria de Evolução */}
+          <div>
+            <div className="flex items-center gap-2 ml-4 mb-2">
+              <Camera size={16} className="text-slate-500" />
+              <h2 className="text-[13px] font-medium text-slate-500 uppercase tracking-wider">Galeria de Fotos (Opcional)</h2>
+            </div>
+            <div className="bg-white rounded-[10px] shadow-sm border border-slate-200/60 p-4">
+              <div className="grid grid-cols-3 gap-3">
+                <PhotoUploader label="Frente" photo={fotoFrente} onSelect={(e) => handlePhotoSelect(e, 'frente')} onClear={() => setFotoFrente(null)} />
+                <PhotoUploader label="Lado" photo={fotoLado} onSelect={(e) => handlePhotoSelect(e, 'lado')} onClear={() => setFotoLado(null)} />
+                <PhotoUploader label="Costas" photo={fotoCostas} onSelect={(e) => handlePhotoSelect(e, 'costas')} onClear={() => setFotoCostas(null)} />
+              </div>
             </div>
           </div>
 
           <button
             type="submit"
             disabled={isSubmitting || !peso || !cintura}
-            className="w-full h-14 mt-2 font-medium text-white bg-indigo-600 rounded-2xl shadow-sm hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-500/20 active:scale-[0.98] transition-all disabled:opacity-50"
+            className="w-full min-h-[50px] mt-2 font-semibold text-[17px] text-white bg-indigo-600 rounded-xl shadow-sm hover:bg-indigo-700 active:scale-95 transition-all disabled:opacity-50 flex items-center justify-center"
           >
-            {isSubmitting ? 'Processando Cálculos...' : 'Calcular Resultados'}
+            {isSubmitting ? 'Calculando...' : 'Calcular Resultados'}
           </button>
         </form>
       </div>
@@ -275,32 +287,37 @@ export function EvaluationForm({ clienteId, onSuccess, onCancel }: EvaluationFor
   );
 }
 
-function InputGroup({ 
+function InputRow({ 
   label, 
   value, 
   onChange, 
-  required = false 
+  required = false,
+  unit
 }: { 
   label: string; 
   value: string; 
   onChange: (val: string) => void;
   required?: boolean;
+  unit: string;
 }) {
   return (
-    <div className="flex flex-col gap-1">
-      <label className="text-sm font-medium text-slate-700 ml-1">
+    <div className="flex items-center min-h-[44px] px-4 py-2">
+      <label className="text-[17px] text-slate-900 w-1/3 shrink-0 flex items-center gap-1">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
-      <input
-        type="text"
-        inputMode="decimal"
-        pattern="[0-9.,]*"
-        value={value}
-        onChange={(e) => onChange(e.target.value.replace(/[^0-9.,]/g, '').replace(',', '.'))}
-        required={required}
-        placeholder="0.0"
-        className="w-full h-14 px-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-800"
-      />
+      <div className="flex-1 flex items-center justify-end gap-1">
+        <input
+          type="text"
+          inputMode="decimal"
+          pattern="[0-9.,]*"
+          value={value}
+          onChange={(e) => onChange(e.target.value.replace(/[^0-9.,]/g, '').replace(',', '.'))}
+          required={required}
+          placeholder="0.0"
+          className="w-16 text-[17px] text-slate-900 text-right bg-transparent outline-none placeholder:text-slate-400"
+        />
+        <span className="text-[17px] text-slate-400">{unit}</span>
+      </div>
     </div>
   );
 }
