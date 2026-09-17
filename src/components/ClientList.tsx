@@ -61,7 +61,8 @@ export function ClientList({ profissionalId, onAddClient, onSelectClient }: Clie
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Pacientes</h1>
           <button 
             onClick={onAddClient}
-            className="w-8 h-8 text-indigo-600 rounded-full flex items-center justify-center hover:bg-indigo-100 active:bg-indigo-200 transition-colors"
+            className="w-11 h-11 text-indigo-600 rounded-full flex items-center justify-center hover:bg-indigo-100 active:bg-indigo-200 transition-colors"
+            aria-label="Adicionar novo paciente"
           >
             <Plus size={28} strokeWidth={2.5} />
           </button>
@@ -77,7 +78,7 @@ export function ClientList({ profissionalId, onAddClient, onSelectClient }: Clie
             placeholder="Buscar..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="block w-full pl-10 pr-3 py-2 border-none rounded-xl leading-5 bg-slate-200/60 placeholder-slate-500 focus:outline-none focus:bg-white focus:ring-2 focus:ring-indigo-500 transition-all text-[17px]"
+            className="block w-full pl-10 pr-3 py-3 border-none rounded-xl leading-5 bg-slate-200/60 placeholder-slate-500 focus:outline-none focus:bg-white focus:ring-2 focus:ring-indigo-500 transition-all text-[17px] min-h-[44px]"
           />
         </div>
       </div>
@@ -110,7 +111,7 @@ export function ClientList({ profissionalId, onAddClient, onSelectClient }: Clie
               <div 
                 key={cliente.id}
                 onClick={() => onSelectClient(cliente)}
-                className="flex items-center justify-between p-3 pl-4 hover:bg-slate-50 active:bg-slate-100 cursor-pointer transition-colors group"
+                className="flex items-center justify-between p-3 pl-4 min-h-[64px] hover:bg-slate-50 active:bg-slate-100 cursor-pointer transition-colors group"
               >
                 <div className="flex items-center gap-3.5">
                   <div className="w-11 h-11 bg-gradient-to-br from-indigo-500 to-indigo-600 text-white font-semibold text-lg rounded-full flex items-center justify-center shadow-inner">
@@ -126,7 +127,7 @@ export function ClientList({ profissionalId, onAddClient, onSelectClient }: Clie
                 <div className="flex items-center gap-1">
                   <button 
                     onClick={(e) => handleDeleteClick(cliente.id, e)}
-                    className="p-2 text-slate-300 hover:text-red-500 active:bg-red-50 rounded-full transition-colors"
+                    className="flex items-center justify-center min-w-[44px] min-h-[44px] text-slate-300 hover:text-red-500 active:bg-red-50 rounded-full transition-colors -my-2"
                     aria-label="Excluir cliente"
                   >
                     <Trash2 size={20} />

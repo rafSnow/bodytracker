@@ -115,7 +115,7 @@ function TabButton({ active, onClick, label }: { active: boolean, onClick: () =>
   return (
     <button
       onClick={onClick}
-      className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+      className={`px-4 py-2 min-h-[44px] min-w-[80px] rounded-full text-sm font-medium transition-colors ${
         active 
           ? 'bg-indigo-600 text-white shadow-sm' 
           : 'bg-slate-100 text-slate-600 hover:bg-slate-200'

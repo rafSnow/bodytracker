@@ -80,7 +80,7 @@ export function ClientDashboard({ cliente, onBack, onNewEvaluation }: ClientDash
       {/* iOS Header Fixo */}
       <div className="sticky top-0 z-30 bg-[#F2F2F7]/80 backdrop-blur-xl border-b border-slate-200/50 pt-12 pb-3 flex flex-col px-2">
         <div className="flex items-center justify-between">
-          <button onClick={onBack} className="p-2 rounded-full text-indigo-600 hover:bg-indigo-100 active:bg-indigo-200 transition-colors flex items-center gap-1">
+          <button onClick={onBack} className="p-3 -ml-2 rounded-full text-indigo-600 hover:bg-indigo-100 active:bg-indigo-200 transition-colors flex items-center gap-1 min-h-[44px] min-w-[44px]">
             <ArrowLeft size={24} />
             <span className="text-[17px]">Voltar</span>
           </button>
@@ -99,7 +99,7 @@ export function ClientDashboard({ cliente, onBack, onNewEvaluation }: ClientDash
             <p className="text-slate-500 text-[14px] leading-snug mb-6">Comece registrando a primeira avaliação deste cliente para acompanhar sua evolução.</p>
             <button
               onClick={onNewEvaluation}
-              className="flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white font-medium rounded-xl shadow-sm hover:bg-indigo-700 active:scale-95 transition-all text-[17px]"
+              className="flex items-center justify-center gap-2 px-6 py-3 min-h-[44px] bg-indigo-600 text-white font-medium rounded-xl shadow-sm hover:bg-indigo-700 active:scale-95 transition-all text-[17px]"
             >
               <Plus size={20} />
               Nova Avaliação
@@ -111,9 +111,10 @@ export function ClientDashboard({ cliente, onBack, onNewEvaluation }: ClientDash
               <h3 className="text-2xl font-bold text-slate-900">Visão Geral</h3>
               <button 
                 onClick={onNewEvaluation}
-                className="flex items-center justify-center w-8 h-8 text-indigo-600 bg-indigo-50 rounded-full hover:bg-indigo-100 active:bg-indigo-200 transition-colors"
+                className="flex items-center justify-center w-11 h-11 text-indigo-600 bg-indigo-50 rounded-full hover:bg-indigo-100 active:bg-indigo-200 transition-colors"
+                aria-label="Nova Avaliação"
               >
-                <Plus size={22} strokeWidth={2.5} />
+                <Plus size={24} strokeWidth={2.5} />
               </button>
             </div>
 
@@ -128,7 +129,8 @@ export function ClientDashboard({ cliente, onBack, onNewEvaluation }: ClientDash
                 {selectedAvaliacaoId && (
                   <button 
                     onClick={() => setEvalToDelete(selectedAvaliacaoId)}
-                    className="text-[14px] font-medium text-red-500 hover:text-red-700 active:opacity-70 transition-opacity"
+                    className="p-2 -mr-2 min-h-[44px] text-[15px] font-medium text-red-500 hover:text-red-700 active:opacity-70 transition-opacity flex items-center justify-center"
+                    aria-label="Excluir avaliação atual"
                   >
                     Excluir Atual
                   </button>
@@ -140,7 +142,7 @@ export function ClientDashboard({ cliente, onBack, onNewEvaluation }: ClientDash
                   <button
                     key={av.id}
                     onClick={() => setSelectedAvaliacaoId(av.id)}
-                    className={`shrink-0 px-4 py-2 rounded-full text-[15px] font-medium transition-colors border ${
+                    className={`shrink-0 px-4 py-2.5 min-h-[44px] rounded-full text-[15px] font-medium transition-colors border ${
                       selectedAvaliacaoId === av.id 
                         ? 'bg-slate-900 text-white border-slate-900 shadow-sm' 
                         : 'bg-white text-slate-600 border-slate-200/60 hover:bg-slate-50'

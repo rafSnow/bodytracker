@@ -101,7 +101,7 @@ export function InstallPWAModal() {
         
         <button 
           onClick={handleDismiss}
-          className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 bg-slate-50 p-1.5 rounded-full transition-colors"
+          className="absolute top-2 right-2 text-slate-400 hover:text-slate-600 bg-slate-50 flex items-center justify-center min-w-[44px] min-h-[44px] rounded-full transition-colors"
           aria-label="Fechar instrução de instalação"
         >
           <X size={20} />
