@@ -22,6 +22,8 @@ export interface Avaliacao {
   cliente_id: string;
   data_avaliacao: Date;
   peso_kg: number;
+  nivel_atividade?: number; // 1.2, 1.375, 1.55, 1.725, 1.9
+  objetivo?: 'emagrecimento' | 'manutencao' | 'hipertrofia';
   medidas: {
     pescoco?: number;
     cintura?: number;
@@ -39,11 +41,21 @@ export interface Resultados {
   calculos: Record<string, any>;
 }
 
+export interface FotoAvaliacao {
+  id: string;
+  avaliacao_id: string;
+  cliente_id: string;
+  tipo: 'frente' | 'lado' | 'costas';
+  foto_base64: string;
+  criado_em: Date;
+}
+
 export class AppDatabase extends Dexie {
   profissionais!: Table<Profissional, string>;
   clientes!: Table<Cliente, string>;
   avaliacoes!: Table<Avaliacao, string>;
   resultados!: Table<Resultados, string>;
+  fotos!: Table<FotoAvaliacao, string>;
 
   constructor() {
     super('BioStatsDB');
@@ -53,6 +65,10 @@ export class AppDatabase extends Dexie {
       clientes: 'id, profissional_id',
       avaliacoes: 'id, cliente_id',
       resultados: 'id, &avaliacao_id'
+    });
+
+    this.version(2).stores({
+      fotos: 'id, avaliacao_id, cliente_id, tipo'
     });
   }
 }

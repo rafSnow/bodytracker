@@ -3,6 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db, type Cliente } from '../db/db';
 import { LatestEvaluationCard, type JoinedEvaluation } from './LatestEvaluationCard';
 import { EvolutionCharts } from './EvolutionCharts';
+import { PhotoComparison } from './PhotoComparison';
 import { EvaluationDetails } from './EvaluationDetails';
 import { ExportPDFButton } from './ExportPDFButton';
 import { ArrowLeft, Plus, History } from 'lucide-react';
@@ -111,6 +112,7 @@ export function ClientDashboard({ cliente, onBack, onNewEvaluation }: ClientDash
 
             <LatestEvaluationCard evaluations={joinedEvaluations} />
             <EvolutionCharts evaluations={joinedEvaluations} />
+            <PhotoComparison clienteId={cliente.id} selectedAvaliacaoId={selectedAvaliacaoId} />
 
             {/* Seletor de Avaliação Específica */}
             <div className="mt-4">
