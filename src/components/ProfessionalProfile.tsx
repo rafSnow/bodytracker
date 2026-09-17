@@ -44,24 +44,24 @@ export function ProfessionalProfile({ onRegister }: ProfessionalProfileProps) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh] p-4">
-      <div className="w-full max-w-md p-6 bg-white/80 backdrop-blur-sm border border-slate-100 rounded-3xl shadow-sm">
+    <div className="flex flex-col items-center justify-center min-h-[80vh] p-4 bg-[#F2F2F7]">
+      <div className="w-full max-w-md p-6 bg-white border border-slate-200/60 rounded-[10px] shadow-sm">
         <div className="flex justify-center mb-6">
-          <div className="p-4 bg-blue-50 text-blue-600 rounded-full">
-            <User size={32} />
+          <div className="p-4 bg-gradient-to-br from-indigo-500 to-indigo-600 text-white rounded-full shadow-inner">
+            <User size={36} strokeWidth={2} />
           </div>
         </div>
         
-        <h1 className="text-2xl font-semibold text-center text-slate-800 mb-2">
-          Bem-vindo ao BioStats
+        <h1 className="text-3xl font-bold text-center text-slate-900 mb-2 tracking-tight">
+          BioStats
         </h1>
-        <p className="text-center text-slate-500 mb-8 text-sm">
-          Crie seu perfil profissional para começar a gerenciar as avaliações dos seus clientes de forma 100% offline.
+        <p className="text-center text-slate-500 mb-8 text-[15px] leading-snug">
+          Crie seu perfil profissional para começar a gerenciar seus pacientes. Funciona 100% offline.
         </p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-          <div className="flex flex-col gap-1">
-            <label htmlFor="nome" className="text-sm font-medium text-slate-700 ml-1">
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="nome" className="text-[13px] font-medium text-slate-500 ml-1 uppercase tracking-wider">
               Seu Nome Completo
             </label>
             <input
@@ -71,13 +71,13 @@ export function ProfessionalProfile({ onRegister }: ProfessionalProfileProps) {
               onChange={(e) => setNome(e.target.value)}
               placeholder="Ex: Dra. Ana Silva"
               required
-              className="w-full h-14 px-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+              className="w-full h-12 px-4 bg-slate-100/80 border-none rounded-[8px] focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all text-[17px]"
             />
           </div>
 
-          <div className="flex flex-col gap-1">
-            <label htmlFor="registro" className="text-sm font-medium text-slate-700 ml-1">
-              Registro Profissional (Opcional)
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="registro" className="text-[13px] font-medium text-slate-500 ml-1 uppercase tracking-wider">
+              Registro Profissional
             </label>
             <div className="relative">
               <input
@@ -85,19 +85,19 @@ export function ProfessionalProfile({ onRegister }: ProfessionalProfileProps) {
                 type="text"
                 value={registro}
                 onChange={(e) => setRegistro(e.target.value)}
-                placeholder="Ex: CRN 12345"
-                className="w-full h-14 pl-4 pr-11 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                placeholder="Ex: CRN 12345 (Opcional)"
+                className="w-full h-12 pl-4 pr-11 bg-slate-100/80 border-none rounded-[8px] focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all text-[17px]"
               />
-              <BadgeCheck className="absolute right-4 top-4 text-slate-400" size={20} />
+              <BadgeCheck className="absolute right-4 top-3.5 text-slate-400" size={20} />
             </div>
           </div>
 
           <button
             type="submit"
             disabled={isSubmitting || !nome.trim()}
-            className="w-full h-14 mt-4 font-medium text-white bg-blue-600 rounded-2xl shadow-sm hover:bg-blue-700 focus:ring-4 focus:ring-blue-500/20 active:scale-[0.98] transition-all disabled:opacity-50 disabled:active:scale-100"
+            className="w-full h-[50px] mt-4 font-semibold text-white bg-indigo-600 rounded-[10px] shadow-sm hover:bg-indigo-700 active:bg-indigo-800 active:scale-[0.98] transition-all disabled:opacity-50 disabled:active:scale-100 text-[17px]"
           >
-            {isSubmitting ? 'Salvando...' : 'Criar Perfil e Começar'}
+            {isSubmitting ? 'Salvando...' : 'Acessar BioStats'}
           </button>
         </form>
       </div>

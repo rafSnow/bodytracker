@@ -126,7 +126,7 @@ function AppContent() {
     return (
       <>
         <InstallPWAModal />
-        <div className="min-h-screen bg-slate-50 flex flex-col p-4 justify-center">
+        <div className="min-h-screen bg-[#F2F2F7] flex flex-col justify-center">
           <ProfessionalProfile onRegister={login} />
         </div>
       </>
