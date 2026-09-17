@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { db } from '../db/db';
 import { UserPlus, ArrowLeft } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 interface ClientFormProps {
   profissionalId: string;
@@ -28,12 +29,14 @@ export function ClientForm({ profissionalId, onSuccess, onCancel }: ClientFormPr
         nome: nome.trim(),
         data_nascimento: new Date(dataNascimento),
         sexo,
-        altura_cm: parseFloat(altura),
+        altura_cm: parseFloat(altura.replace(',', '.')),
         criado_em: new Date(),
       });
+      toast.success('Paciente cadastrado com sucesso!');
       onSuccess();
     } catch (error) {
       console.error('Erro ao cadastrar cliente:', error);
+      toast.error('Erro ao cadastrar paciente');
     } finally {
       setIsSubmitting(false);
     }

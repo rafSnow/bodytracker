@@ -4,6 +4,7 @@ import { ChevronRight, Plus, Search, Trash2, Users } from 'lucide-react';
 import { calculateIdade } from '../utils/dateUtils';
 import { useState } from 'react';
 import { ActionSheet } from './ActionSheet';
+import toast from 'react-hot-toast';
 
 interface ClientListProps {
   profissionalId: string;
@@ -34,8 +35,10 @@ export function ClientList({ profissionalId, onAddClient, onSelectClient }: Clie
         }
         await db.clientes.delete(clientToDelete);
       });
+      toast.success('Paciente excluído');
     } catch (err) {
       console.error('Erro ao excluir cliente:', err);
+      toast.error('Erro ao excluir paciente');
     } finally {
       setClientToDelete(null);
     }

@@ -21,6 +21,7 @@ import {
   type Objetivo
 } from '../utils/calculator';
 import { Activity, ArrowLeft, Camera } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 interface EvaluationFormProps {
   clienteId: string;
@@ -157,9 +158,11 @@ export function EvaluationForm({ clienteId, onSuccess, onCancel }: EvaluationFor
         }
       });
 
+      toast.success('Avaliação salva com sucesso!');
       onSuccess();
     } catch (error) {
       console.error('Erro ao salvar avaliação:', error);
+      toast.error('Erro ao salvar avaliação');
     } finally {
       setIsSubmitting(false);
     }

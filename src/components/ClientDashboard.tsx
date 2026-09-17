@@ -8,6 +8,7 @@ import { EvaluationDetails } from './EvaluationDetails';
 import { ExportPDFButton } from './ExportPDFButton';
 import { ArrowLeft, Plus, History } from 'lucide-react';
 import { ActionSheet } from './ActionSheet';
+import toast from 'react-hot-toast';
 
 interface ClientDashboardProps {
   cliente: Cliente;
@@ -65,8 +66,10 @@ export function ClientDashboard({ cliente, onBack, onNewEvaluation }: ClientDash
       if (selectedAvaliacaoId === evalToDelete) {
         setSelectedAvaliacaoId(null);
       }
+      toast.success('Avaliação excluída');
     } catch (err) {
       console.error('Erro ao excluir avaliação:', err);
+      toast.error('Erro ao excluir avaliação');
     } finally {
       setEvalToDelete(null);
     }

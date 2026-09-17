@@ -12,6 +12,7 @@ import { DataBackupManager } from './components/DataBackupManager';
 import { LogOut } from 'lucide-react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from './db/db';
+import { Toaster } from 'react-hot-toast';
 
 // Componente Wrapper das Rotas Privadas (com Layout)
 function PrivateRoutes() {
@@ -147,6 +148,29 @@ export default function App() {
       <Router hook={useHashLocation}>
         <AppContent />
       </Router>
+      <Toaster 
+        position="top-center"
+        toastOptions={{
+          style: {
+            background: 'rgba(255, 255, 255, 0.85)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            color: '#1e293b',
+            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+            borderRadius: '100px',
+            padding: '12px 20px',
+            fontSize: '15px',
+            fontWeight: 500,
+            border: '1px solid rgba(226, 232, 240, 0.6)'
+          },
+          success: {
+            iconTheme: {
+              primary: '#10b981',
+              secondary: '#fff',
+            },
+          },
+        }}
+      />
     </AuthProvider>
   );
 }
