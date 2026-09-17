@@ -21,17 +21,20 @@ export function ExportPDFButton({ elementId, fileName = 'relatorio-avaliacao.pdf
     setIsExporting(true);
     
     try {
-      // Usar uma escala maior para manter a nitidez
+      // Configuracoes robustas para lidar com React/Tailwind/SVGs
       const canvas = await html2canvas(element, { 
         scale: 2, 
         useCORS: true, 
-        logging: false,
-        backgroundColor: '#f8fafc' // slate-50
+        allowTaint: true,
+        logging: true, // Habilitar temporariamente para ver os logs de renderização se falhar
+        backgroundColor: '#ffffff',
+        windowWidth: element.scrollWidth,
+        windowHeight: element.scrollHeight
       });
       
-      const imgData = canvas.toDataURL('image/png');
+      const imgData = canvas.toDataURL('image/jpeg', 0.95);
       
-      // Criar PDF (A4)
+      // Criar PDF (A4 - retrato, usando jsPDF)
       const pdf = new jsPDF('p', 'mm', 'a4');
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = pdf.internal.pageSize.getHeight();
@@ -43,24 +46,23 @@ export function ExportPDFButton({ elementId, fileName = 'relatorio-avaliacao.pdf
       let position = 0;
       
       // Adicionar primeira página
-      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
       addLegalFooter(pdf, pdfWidth, pdfHeight);
-      
       heightLeft -= pdfHeight;
       
       // Criar novas páginas se o conteúdo ultrapassar 1 página
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight; // Move the image up to slice it
         pdf.addPage();
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
         addLegalFooter(pdf, pdfWidth, pdfHeight);
         heightLeft -= pdfHeight;
       }
       
       pdf.save(fileName);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao gerar PDF:', error);
-      alert('Ocorreu um erro ao gerar o PDF. Tente novamente.');
+      alert(`Ocorreu um erro ao gerar o PDF: ${error.message || error}`);
     } finally {
       setIsExporting(false);
     }

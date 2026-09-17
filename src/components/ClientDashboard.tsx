@@ -148,7 +148,7 @@ export function ClientDashboard({ cliente, onBack, onNewEvaluation }: ClientDash
             </div>
 
             {/* Área de Exportação */}
-            <div className="mt-8 pt-8 border-t border-slate-100 flex flex-col gap-4">
+            <div data-html2canvas-ignore="true" className="mt-8 pt-8 border-t border-slate-100 flex flex-col gap-4">
               <h3 className="text-lg font-semibold text-slate-800">Exportar Relatório</h3>
               <p className="text-sm text-slate-500">Gere um documento PDF contendo todo o histórico e os gráficos detalhados para entregar ao cliente.</p>
               <ExportPDFButton elementId="client-report-content" fileName={`relatorio-${cliente.nome.replace(/\s+/g, '-').toLowerCase()}.pdf`} />

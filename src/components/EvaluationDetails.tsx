@@ -75,8 +75,9 @@ export function EvaluationDetails({ avaliacaoId }: EvaluationDetailsProps) {
   return (
     <div className="flex flex-col gap-6 w-full">
       <button 
+        data-html2canvas-ignore="true"
         onClick={handleWhatsAppShare}
-        className="w-full flex items-center justify-center gap-2 h-14 bg-green-500 hover:bg-green-600 active:bg-green-700 text-white font-medium rounded-2xl shadow-sm transition-colors"
+        className="w-full flex items-center justify-center gap-2 h-14 bg-green-500 hover:bg-green-600 active:bg-green-700 text-white font-medium rounded-2xl shadow-sm transition-colors mb-4"
       >
         <Share2 size={20} />
         Compartilhar no WhatsApp
