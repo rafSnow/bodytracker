@@ -22,31 +22,46 @@ export function InstallPWAModal() {
       return;
     }
 
-    // Device Detection for iOS
+    // Device Detection for iOS (including iPadOS 13+)
     const userAgent = window.navigator.userAgent.toLowerCase();
-    const isIosDevice = /iphone|ipad|ipod/.test(userAgent);
+    const isIosDevice = 
+      /iphone|ipad|ipod/.test(userAgent) || 
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      
     setIsIOS(isIosDevice);
 
     if (isIosDevice) {
-      // Show iOS prompt after a short delay to not overwhelm on first load
+      // Show iOS prompt after a short delay
       const timer = setTimeout(() => {
         setShowPrompt(true);
-      }, 3500);
+      }, 2500);
       return () => clearTimeout(timer);
     }
 
-    // Android / Chrome - wait for beforeinstallprompt event
-    const handleBeforeInstallPrompt = (e: Event) => {
-      // Prevent Chrome 67 and earlier from automatically showing the prompt
-      e.preventDefault();
-      // Stash the event so it can be triggered later.
+    // Android / Chrome - handle global event
+    const handleDeferredPrompt = (e: any) => {
       setDeferredPrompt(e);
-      
-      // Wait a bit before showing to not interrupt the initial render aggressively
-      setTimeout(() => setShowPrompt(true), 2500);
+      setTimeout(() => setShowPrompt(true), 1500);
     };
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    if ((window as any).deferredPWAInstallPrompt) {
+      handleDeferredPrompt((window as any).deferredPWAInstallPrompt);
+    } else {
+      const onReady = () => handleDeferredPrompt((window as any).deferredPWAInstallPrompt);
+      window.addEventListener('pwa-prompt-ready', onReady);
+      
+      // Fallback: Just in case it fires while we are mounted
+      const handleBeforeInstallPrompt = (e: Event) => {
+        e.preventDefault();
+        handleDeferredPrompt(e);
+      };
+      window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+      return () => {
+        window.removeEventListener('pwa-prompt-ready', onReady);
+        window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      };
+    }
 
     // Also listen for successful installation to dismiss modal
     const handleAppInstalled = () => {
@@ -57,7 +72,6 @@ export function InstallPWAModal() {
     window.addEventListener('appinstalled', handleAppInstalled);
 
     return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
       window.removeEventListener('appinstalled', handleAppInstalled);
     };
   }, []);

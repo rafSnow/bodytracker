@@ -2,6 +2,7 @@ import { Switch, Route, useLocation, Router } from 'wouter';
 import { useHashLocation } from 'wouter/use-hash-location';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { Layout } from './components/Layout';
+import { InstallPWAModal } from './components/InstallPWAModal';
 import { ProfessionalProfile } from './components/ProfessionalProfile';
 import { ClientList } from './components/ClientList';
 import { ClientForm } from './components/ClientForm';
@@ -118,13 +119,21 @@ function AppContent() {
 
   if (!profissionalId) {
     return (
-      <div className="min-h-screen bg-slate-50 flex flex-col p-4 justify-center">
-        <ProfessionalProfile onRegister={login} />
-      </div>
+      <>
+        <InstallPWAModal />
+        <div className="min-h-screen bg-slate-50 flex flex-col p-4 justify-center">
+          <ProfessionalProfile onRegister={login} />
+        </div>
+      </>
     );
   }
 
-  return <PrivateRoutes />;
+  return (
+    <>
+      <InstallPWAModal />
+      <PrivateRoutes />
+    </>
+  );
 }
 
 export default function App() {
