@@ -91,12 +91,12 @@ export function ClientDashboard({ cliente, onBack, onNewEvaluation }: ClientDash
 
       <div className="p-4 flex flex-col gap-6" id="client-report-content">
         {joinedEvaluations.length === 0 ? (
-          <div className="flex flex-col items-center justify-center p-8 bg-white border border-slate-200/60 rounded-[10px] shadow-sm text-center">
-            <div className="w-16 h-16 bg-slate-50 text-slate-400 rounded-full flex items-center justify-center mb-4">
+          <div className="flex flex-col items-center justify-center p-8 bg-white border border-slate-200/60 rounded-[10px] shadow-sm text-center mt-4">
+            <div className="w-16 h-16 bg-indigo-50 text-indigo-400 rounded-full flex items-center justify-center mb-4">
               <History size={32} />
             </div>
-            <h3 className="text-[17px] font-semibold text-slate-900 mb-2">Nenhuma avaliação</h3>
-            <p className="text-slate-500 text-[14px] leading-snug mb-6">Comece registrando a primeira avaliação deste cliente para acompanhar sua evolução.</p>
+            <h3 className="text-[17px] font-semibold text-slate-900 mb-2">O ponto de partida! 🚀</h3>
+            <p className="text-slate-500 text-[15px] leading-snug mb-6">Registre a primeira avaliação de {cliente.nome.split(' ')[0]} e dê o primeiro passo para acompanhar resultados incríveis.</p>
             <button
               onClick={onNewEvaluation}
               className="flex items-center justify-center gap-2 px-6 py-3 min-h-[44px] bg-indigo-600 text-white font-medium rounded-xl shadow-sm hover:bg-indigo-700 active:scale-95 transition-all text-[17px]"

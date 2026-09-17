@@ -100,10 +100,25 @@ export function ClientList({ profissionalId, onAddClient, onSelectClient }: Clie
               </div>
             ))}
           </div>
+        ) : clientes?.length === 0 ? (
+          <div className="text-center py-12 flex flex-col items-center gap-3 bg-white rounded-[10px] border border-slate-200/60 shadow-sm px-6">
+            <div className="w-16 h-16 bg-indigo-50 text-indigo-400 rounded-full flex items-center justify-center mb-2">
+              <Users size={32} />
+            </div>
+            <h3 className="text-[17px] font-semibold text-slate-900">Sua clínica está vazia</h3>
+            <p className="text-slate-500 text-[15px] leading-snug mb-2">Adicione seu primeiro paciente e comece a transformar vidas hoje mesmo!</p>
+            <button 
+              onClick={onAddClient}
+              className="mt-2 text-indigo-600 font-medium bg-indigo-50 px-5 py-2.5 rounded-full hover:bg-indigo-100 active:scale-95 transition-all text-[15px]"
+            >
+              Adicionar Paciente
+            </button>
+          </div>
         ) : filteredClientes?.length === 0 ? (
-          <div className="text-center py-10 flex flex-col items-center gap-3">
-            <Users size={48} className="text-slate-300 mb-2" />
-            <p className="text-slate-500 text-[17px]">Nenhum paciente.</p>
+          <div className="text-center py-12 flex flex-col items-center gap-3">
+            <Search size={40} className="text-slate-300 mb-2" />
+            <h3 className="text-[17px] font-semibold text-slate-800">Nada encontrado</h3>
+            <p className="text-slate-500 text-[15px]">Não achamos ninguém com "{searchTerm}".<br/>Que tal tentar outro nome?</p>
           </div>
         ) : (
           <div className="bg-white rounded-[10px] overflow-hidden shadow-sm border border-slate-200/60 divide-y divide-slate-100">

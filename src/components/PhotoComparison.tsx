@@ -75,11 +75,14 @@ export function PhotoComparison({ clienteId, selectedAvaliacaoId }: PhotoCompari
             <span className="text-xs text-slate-400 text-center -mt-1">
               {format(dadosVisualizacao.primeira.avaliacao.data_avaliacao, "dd/MM/yyyy", { locale: ptBR })}
             </span>
-            <div className="w-full aspect-[3/4] bg-slate-100 rounded-2xl overflow-hidden flex items-center justify-center border border-slate-200">
+            <div className="w-full aspect-[3/4] bg-slate-100 rounded-2xl overflow-hidden flex flex-col items-center justify-center border border-slate-200 px-4 text-center">
               {dadosVisualizacao.primeira.foto ? (
                 <img src={dadosVisualizacao.primeira.foto} alt="Antes" className="w-full h-full object-cover" />
               ) : (
-                <span className="text-xs text-slate-400">Sem foto</span>
+                <>
+                  <Camera size={24} className="text-slate-300 mb-2" />
+                  <span className="text-[13px] font-medium text-slate-400 leading-snug">Câmera tímida? 📸<br/>Sem foto registrada.</span>
+                </>
               )}
             </div>
           </div>
@@ -97,11 +100,14 @@ export function PhotoComparison({ clienteId, selectedAvaliacaoId }: PhotoCompari
             <span className="text-xs text-indigo-400 text-center -mt-1">
               {format(dadosVisualizacao.selecionada.avaliacao.data_avaliacao, "dd/MM/yyyy", { locale: ptBR })}
             </span>
-            <div className="w-full aspect-[3/4] bg-slate-100 rounded-2xl overflow-hidden flex items-center justify-center border border-slate-200">
+            <div className="w-full aspect-[3/4] bg-slate-100 rounded-2xl overflow-hidden flex flex-col items-center justify-center border border-slate-200 px-4 text-center">
               {dadosVisualizacao.selecionada.foto ? (
                 <img src={dadosVisualizacao.selecionada.foto} alt="Depois" className="w-full h-full object-cover" />
               ) : (
-                <span className="text-xs text-slate-400">Sem foto</span>
+                <>
+                  <Camera size={24} className="text-slate-300 mb-2" />
+                  <span className="text-[13px] font-medium text-slate-400 leading-snug">Nenhuma foto salva nesta sessão.</span>
+                </>
               )}
             </div>
           </div>
