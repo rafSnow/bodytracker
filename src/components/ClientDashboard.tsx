@@ -101,12 +101,11 @@ export function ClientDashboard({ cliente, onBack, onNewEvaluation }: ClientDash
           <>
             <div className="flex items-center justify-between">
               <h3 className="text-xl font-bold text-slate-800">Visão Geral</h3>
-              <button
+              <button 
                 onClick={onNewEvaluation}
-                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-xl shadow-sm hover:bg-indigo-700 active:scale-95 transition-all"
+                className="flex items-center justify-center w-10 h-10 bg-indigo-50 text-indigo-600 rounded-full hover:bg-indigo-100 transition-colors"
               >
-                <Plus size={16} />
-                Nova Avaliação
+                <Plus size={24} />
               </button>
             </div>
 
@@ -128,7 +127,7 @@ export function ClientDashboard({ cliente, onBack, onNewEvaluation }: ClientDash
                 )}
               </div>
               
-              <div className="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-hide">
+              <div className="flex overflow-x-auto pb-2 gap-2 snap-x hide-scrollbar">
                 {avaliacoes?.map((av, idx) => (
                   <button
                     key={av.id}
@@ -139,7 +138,7 @@ export function ClientDashboard({ cliente, onBack, onNewEvaluation }: ClientDash
                         : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
                     }`}
                   >
-                    {idx === 0 ? 'Última (Atual)' : new Date(av.data_avaliacao).toLocaleDateString('pt-BR')}
+                    {idx === 0 ? 'Última (Atual)' : new Date(av.data_avaliacao).toLocaleDateString()}
                   </button>
                 ))}
               </div>
@@ -148,11 +147,21 @@ export function ClientDashboard({ cliente, onBack, onNewEvaluation }: ClientDash
             </div>
 
             {/* Área de Exportação */}
-            <div data-html2canvas-ignore="true" className="mt-8 pt-8 border-t border-slate-100 flex flex-col gap-4">
-              <h3 className="text-lg font-semibold text-slate-800">Exportar Relatório</h3>
-              <p className="text-sm text-slate-500">Gere um documento PDF contendo todo o histórico e os gráficos detalhados para entregar ao cliente.</p>
-              <ExportPDFButton elementId="client-report-content" fileName={`relatorio-${cliente.nome.replace(/\s+/g, '-').toLowerCase()}.pdf`} />
-            </div>
+            {(() => {
+              const selectedJoined = joinedEvaluations.find(j => j.avaliacao.id === selectedAvaliacaoId);
+              return (
+                <div data-html2canvas-ignore="true" className="mt-8 pt-8 border-t border-slate-100 flex flex-col gap-4">
+                  <h3 className="text-lg font-semibold text-slate-800">Exportar Relatório</h3>
+                  <p className="text-sm text-slate-500">Gere um documento PDF contendo todo o histórico e os gráficos detalhados para entregar ao cliente.</p>
+                  <ExportPDFButton 
+                    cliente={cliente}
+                    avaliacao={selectedJoined?.avaliacao}
+                    resultado={selectedJoined?.resultado}
+                    fileName={`relatorio-${cliente.nome.replace(/\s+/g, '-').toLowerCase()}.pdf`} 
+                  />
+                </div>
+              );
+            })()}
           </>
         )}
       </div>

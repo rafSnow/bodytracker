@@ -1,94 +1,57 @@
 import { useState } from 'react';
-import { toJpeg } from 'html-to-image';
-import { jsPDF } from 'jspdf';
+import { pdf } from '@react-pdf/renderer';
 import { Download, Loader2 } from 'lucide-react';
+import { ReportPDFDocument } from './ReportPDFDocument';
+import type { Cliente, Avaliacao, Resultados } from '../db/db';
 
 interface ExportPDFButtonProps {
-  elementId: string;
+  cliente: Cliente;
+  avaliacao?: Avaliacao;
+  resultado?: Resultados;
   fileName?: string;
 }
 
-export function ExportPDFButton({ elementId, fileName = 'relatorio-avaliacao.pdf' }: ExportPDFButtonProps) {
+export function ExportPDFButton({ 
+  cliente, 
+  avaliacao, 
+  resultado, 
+  fileName = 'relatorio-avaliacao.pdf' 
+}: ExportPDFButtonProps) {
   const [isExporting, setIsExporting] = useState(false);
 
   const handleExportPDF = async () => {
-    const element = document.getElementById(elementId);
-    if (!element) {
-      console.error('Elemento alvo para PDF não encontrado');
+    if (!avaliacao || !resultado) {
+      alert('Dados da avaliação não encontrados para gerar o PDF.');
       return;
     }
 
     setIsExporting(true);
     
     try {
-      const pixelRatio = 2;
+      // Gera o documento PDF premium em memória (blob)
+      const doc = <ReportPDFDocument cliente={cliente} avaliacao={avaliacao} resultado={resultado} />;
+      const asPdf = pdf(doc);
+      asPdf.updateContainer(doc); // forca a criacao
+      const blob = await asPdf.toBlob();
       
-      // html-to-image resolve o problema do CSS "oklch" nativamente pois usa o renderizador do browser
-      const imgData = await toJpeg(element, { 
-        quality: 0.95,
-        backgroundColor: '#ffffff',
-        pixelRatio: pixelRatio,
-        filter: (node: HTMLElement) => {
-          // Ignorar elementos com a tag de ignore do html2canvas/html-to-image
-          if (node?.getAttribute && node.getAttribute('data-html2canvas-ignore') === 'true') {
-            return false;
-          }
-          return true;
-        }
-      });
+      // Cria URL local e dispara o download
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
       
-      const canvasWidth = element.scrollWidth * pixelRatio;
-      const canvasHeight = element.scrollHeight * pixelRatio;
+      // Limpa a URL para liberar memoria
+      setTimeout(() => URL.revokeObjectURL(url), 100);
       
-      // Criar PDF (A4 - retrato, usando jsPDF)
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      
-      const imgWidth = pdfWidth;
-      const imgHeight = (canvasHeight * imgWidth) / canvasWidth;
-      
-      let heightLeft = imgHeight;
-      let position = 0;
-      
-      // Adicionar primeira página
-      pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-      addLegalFooter(pdf, pdfWidth, pdfHeight);
-      heightLeft -= pdfHeight;
-      
-      // Criar novas páginas se o conteúdo ultrapassar 1 página
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight; // Move the image up to slice it
-        pdf.addPage();
-        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-        addLegalFooter(pdf, pdfWidth, pdfHeight);
-        heightLeft -= pdfHeight;
-      }
-      
-      pdf.save(fileName);
     } catch (error: any) {
-      console.error('Erro ao gerar PDF:', error);
+      console.error('Erro ao gerar PDF Premium:', error);
       alert(`Ocorreu um erro ao gerar o PDF: ${error.message || error}`);
     } finally {
       setIsExporting(false);
     }
-  };
-
-  const addLegalFooter = (doc: jsPDF, pageWidth: number, pageHeight: number) => {
-    const disclaimerText = "Este documento gera estimativas de composição corporal baseadas em equações antropométricas validadas na literatura científica. Os resultados não representam diagnóstico médico e não substituem exames clínicos ou de imagem.";
-    
-    doc.setFontSize(9);
-    doc.setTextColor(150, 150, 150); // Cinza claro
-    
-    // Adiciona o texto no rodapé (com margem de 10mm das laterais e 10mm do fim)
-    const margin = 10;
-    const yPos = pageHeight - 10;
-    
-    // O recurso text do jsPDF com maxWidth faz quebra de linha automática
-    doc.text(disclaimerText, pageWidth / 2, yPos, { 
-      maxWidth: pageWidth - (margin * 2), 
-      align: 'center' 
-    });
   };
 
   return (
@@ -102,7 +65,7 @@ export function ExportPDFButton({ elementId, fileName = 'relatorio-avaliacao.pdf
       ) : (
         <Download size={20} />
       )}
-      <span>{isExporting ? 'Gerando Relatório...' : 'Baixar Relatório (PDF)'}</span>
+      <span>{isExporting ? 'Gerando Relatório Premium...' : 'Baixar Relatório (PDF)'}</span>
     </button>
   );
 }
