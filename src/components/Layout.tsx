@@ -3,6 +3,7 @@ import { useLocation } from 'wouter';
 import { Users, Settings } from 'lucide-react';
 import { OfflineIndicator } from './OfflineIndicator';
 import { LegalDisclaimerModal } from './LegalDisclaimerModal';
+import { InstallPWAModal } from './InstallPWAModal';
 
 interface LayoutProps {
   children: ReactNode;
@@ -19,6 +20,7 @@ export function Layout({ children }: LayoutProps) {
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900 selection:bg-indigo-100 selection:text-indigo-900 flex flex-col">
       <OfflineIndicator />
       <LegalDisclaimerModal />
+      <InstallPWAModal />
       
       {/* Container Principal Mobile-First */}
       <main className="flex-1 w-full max-w-md mx-auto relative pb-24">
