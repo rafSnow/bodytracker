@@ -158,7 +158,7 @@ export const ReportPDFDocument = ({ cliente, avaliacao, resultado }: ReportPDFDo
             </View>
             <View style={styles.card}>
               <Text style={styles.label}>Peso Ideal (Devine)</Text>
-              <Text style={styles.value}>{c.ibwDevine ? `${c.ibwDevine.toFixed(1)} kg` : '--'}</Text>
+              <Text style={styles.value}>{c.ibw ? `${c.ibw.toFixed(1)} kg` : '--'}</Text>
             </View>
           </View>
         </View>
@@ -173,7 +173,7 @@ export const ReportPDFDocument = ({ cliente, avaliacao, resultado }: ReportPDFDo
             </View>
             <View style={styles.highlightCard}>
               <Text style={styles.highlightTitle}>Massa Magra (Boer)</Text>
-              <Text style={styles.highlightValue}>{c.massaMagraBoer ? `${c.massaMagraBoer.toFixed(1)} kg` : '--'}</Text>
+              <Text style={styles.highlightValue}>{c.lbmBoer ? `${c.lbmBoer.toFixed(1)} kg` : '--'}</Text>
             </View>
             <View style={styles.highlightCard}>
               <Text style={styles.highlightTitle}>Índice de Massa Corporal</Text>
@@ -181,7 +181,7 @@ export const ReportPDFDocument = ({ cliente, avaliacao, resultado }: ReportPDFDo
             </View>
             <View style={styles.highlightCard}>
               <Text style={styles.highlightTitle}>Relação Cintura-Estatura</Text>
-              <Text style={styles.highlightValue}>{c.rce ? c.rce.toFixed(2) : '--'}</Text>
+              <Text style={styles.highlightValue}>{c.rcEst ? c.rcEst.toFixed(2) : '--'}</Text>
             </View>
           </View>
         </View>
