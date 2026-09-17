@@ -277,7 +277,6 @@ function InputGroup({
       <input
         type="number"
         inputMode="decimal"
-        pattern="[0-9]*"
         step="0.1"
         value={value}
         onChange={(e) => onChange(e.target.value)}

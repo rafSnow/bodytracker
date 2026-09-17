@@ -108,7 +108,6 @@ export function ClientForm({ profissionalId, onSuccess, onCancel }: ClientFormPr
                 id="altura"
                 type="number"
                 inputMode="decimal"
-                pattern="[0-9]*"
                 value={altura}
                 onChange={(e) => setAltura(e.target.value)}
                 placeholder="Ex: 175"
