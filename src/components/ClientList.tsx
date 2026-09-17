@@ -1,8 +1,9 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, type Cliente } from '../db/db';
-import { Users, Plus, ChevronRight, Search, Trash2 } from 'lucide-react';
+import { ChevronRight, Plus, Search, Trash2, Users } from 'lucide-react';
 import { calculateIdade } from '../utils/dateUtils';
 import { useState } from 'react';
+import { ActionSheet } from './ActionSheet';
 
 interface ClientListProps {
   profissionalId: string;
@@ -18,24 +19,31 @@ export function ClientList({ profissionalId, onAddClient, onSelectClient }: Clie
     [profissionalId]
   );
 
-  const handleDeleteClient = async (id: string, e: React.MouseEvent) => {
-    e.stopPropagation(); // Evita navegar
-    if (window.confirm('Excluir este paciente? Todo o histórico será perdido.')) {
-      try {
-        const avaliacoes = await db.avaliacoes.where('cliente_id').equals(id).toArray();
-        const avIds = avaliacoes.map(a => a.id);
-        
-        await db.transaction('rw', db.clientes, db.avaliacoes, db.resultados, async () => {
-          if (avIds.length > 0) {
-            await db.resultados.where('avaliacao_id').anyOf(avIds).delete();
-            await db.avaliacoes.bulkDelete(avIds);
-          }
-          await db.clientes.delete(id);
-        });
-      } catch (err) {
-        console.error('Erro ao excluir cliente:', err);
-      }
+  const [clientToDelete, setClientToDelete] = useState<string | null>(null);
+
+  const confirmDeleteClient = async () => {
+    if (!clientToDelete) return;
+    try {
+      const avaliacoes = await db.avaliacoes.where('cliente_id').equals(clientToDelete).toArray();
+      const avIds = avaliacoes.map(a => a.id);
+      
+      await db.transaction('rw', db.clientes, db.avaliacoes, db.resultados, async () => {
+        if (avIds.length > 0) {
+          await db.resultados.where('avaliacao_id').anyOf(avIds).delete();
+          await db.avaliacoes.bulkDelete(avIds);
+        }
+        await db.clientes.delete(clientToDelete);
+      });
+    } catch (err) {
+      console.error('Erro ao excluir cliente:', err);
+    } finally {
+      setClientToDelete(null);
     }
+  };
+
+  const handleDeleteClick = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // Evita navegar
+    setClientToDelete(id);
   };
 
   const filteredClientes = clientes?.filter(c => 
@@ -101,7 +109,7 @@ export function ClientList({ profissionalId, onAddClient, onSelectClient }: Clie
                 </div>
                 <div className="flex items-center gap-1">
                   <button 
-                    onClick={(e) => handleDeleteClient(cliente.id, e)}
+                    onClick={(e) => handleDeleteClick(cliente.id, e)}
                     className="p-2 text-slate-300 hover:text-red-500 active:bg-red-50 rounded-full transition-colors"
                     aria-label="Excluir cliente"
                   >
@@ -114,6 +122,15 @@ export function ClientList({ profissionalId, onAddClient, onSelectClient }: Clie
           </div>
         )}
       </div>
+
+      <ActionSheet 
+        isOpen={!!clientToDelete}
+        onClose={() => setClientToDelete(null)}
+        onConfirm={confirmDeleteClient}
+        title="Excluir Paciente"
+        description="Todo o histórico será permanentemente apagado. Esta ação não pode ser desfeita."
+        confirmText="Excluir Paciente"
+      />
     </div>
   );
 }

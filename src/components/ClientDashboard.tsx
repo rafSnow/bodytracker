@@ -7,6 +7,7 @@ import { PhotoComparison } from './PhotoComparison';
 import { EvaluationDetails } from './EvaluationDetails';
 import { ExportPDFButton } from './ExportPDFButton';
 import { ArrowLeft, Plus, History } from 'lucide-react';
+import { ActionSheet } from './ActionSheet';
 
 interface ClientDashboardProps {
   cliente: Cliente;
@@ -52,19 +53,22 @@ export function ClientDashboard({ cliente, onBack, onNewEvaluation }: ClientDash
     }
   }, [avaliacoes, selectedAvaliacaoId]);
 
-  const handleDeleteEval = async (avId: string) => {
-    if (window.confirm('Tem certeza que deseja excluir esta avaliação? Esta ação é irreversível.')) {
-      try {
-        await db.transaction('rw', db.avaliacoes, db.resultados, async () => {
-          await db.resultados.where('avaliacao_id').equals(avId).delete();
-          await db.avaliacoes.delete(avId);
-        });
-        if (selectedAvaliacaoId === avId) {
-          setSelectedAvaliacaoId(null);
-        }
-      } catch (err) {
-        console.error('Erro ao excluir avaliação:', err);
+  const [evalToDelete, setEvalToDelete] = useState<string | null>(null);
+
+  const confirmDeleteEval = async () => {
+    if (!evalToDelete) return;
+    try {
+      await db.transaction('rw', db.avaliacoes, db.resultados, async () => {
+        await db.resultados.where('avaliacao_id').equals(evalToDelete).delete();
+        await db.avaliacoes.delete(evalToDelete);
+      });
+      if (selectedAvaliacaoId === evalToDelete) {
+        setSelectedAvaliacaoId(null);
       }
+    } catch (err) {
+      console.error('Erro ao excluir avaliação:', err);
+    } finally {
+      setEvalToDelete(null);
     }
   };
 
@@ -120,7 +124,7 @@ export function ClientDashboard({ cliente, onBack, onNewEvaluation }: ClientDash
                 <h3 className="text-2xl font-bold text-slate-900">Detalhes por Avaliação</h3>
                 {selectedAvaliacaoId && (
                   <button 
-                    onClick={() => handleDeleteEval(selectedAvaliacaoId)}
+                    onClick={() => setEvalToDelete(selectedAvaliacaoId)}
                     className="text-[14px] font-medium text-red-500 hover:text-red-700 active:opacity-70 transition-opacity"
                   >
                     Excluir Atual
@@ -166,6 +170,15 @@ export function ClientDashboard({ cliente, onBack, onNewEvaluation }: ClientDash
           </>
         )}
       </div>
+
+      <ActionSheet 
+        isOpen={!!evalToDelete}
+        onClose={() => setEvalToDelete(null)}
+        onConfirm={confirmDeleteEval}
+        title="Excluir Avaliação"
+        description="Esta ação é irreversível e os dados desta avaliação serão permanentemente apagados."
+        confirmText="Excluir Avaliação"
+      />
     </div>
   );
 }
