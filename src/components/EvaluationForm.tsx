@@ -168,7 +168,21 @@ export function EvaluationForm({ clienteId, onSuccess, onCancel }: EvaluationFor
     }
   };
 
-  if (!cliente) return <div className="p-4 text-center">Carregando dados...</div>;
+  if (!cliente) {
+    return (
+      <div className="flex flex-col w-full min-h-screen bg-[#F2F2F7] animate-pulse">
+        <div className="sticky top-0 z-30 bg-[#F2F2F7]/80 backdrop-blur-xl border-b border-slate-200/50 pt-12 pb-3 px-2 flex items-center justify-between">
+          <div className="w-16 h-6 bg-slate-200 rounded-md ml-2" />
+          <div className="w-32 h-6 bg-slate-200 rounded-md" />
+          <div className="w-16 h-6 bg-slate-200 rounded-md mr-2" />
+        </div>
+        <div className="px-4 py-6 flex flex-col gap-6">
+          <div className="bg-white rounded-[10px] border border-slate-200/60 p-4 h-48" />
+          <div className="bg-white rounded-[10px] border border-slate-200/60 p-4 h-64" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50 p-4 pb-24">

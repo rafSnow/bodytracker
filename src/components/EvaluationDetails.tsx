@@ -14,7 +14,16 @@ export function EvaluationDetails({ avaliacaoId }: EvaluationDetailsProps) {
   const cliente = useLiveQuery(() => avaliacao ? db.clientes.get(avaliacao.cliente_id) : undefined, [avaliacao]);
 
   if (avaliacao === undefined || resultado === undefined || (avaliacao && cliente === undefined)) {
-    return <div className="p-4 text-center text-slate-500">Carregando detalhes...</div>;
+    return (
+      <div className="animate-pulse flex flex-col gap-4 mt-2">
+        <div className="grid grid-cols-2 gap-3">
+          {[1, 2, 3, 4].map(i => (
+            <div key={i} className="bg-white rounded-[10px] p-4 shadow-sm border border-slate-200/60 h-28" />
+          ))}
+        </div>
+        <div className="bg-white rounded-[10px] p-4 shadow-sm border border-slate-200/60 h-40" />
+      </div>
+    );
   }
 
   if (!avaliacao || !resultado || !cliente) {

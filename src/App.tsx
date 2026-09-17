@@ -104,7 +104,29 @@ function ClientDashboardRoute({ clienteId }: { clienteId: string }) {
   const [, setLocation] = useLocation();
   const cliente = useLiveQuery(() => db.clientes.get(clienteId), [clienteId]);
 
-  if (cliente === undefined) return <div className="p-8 text-center text-slate-500">Carregando...</div>;
+  if (cliente === undefined) {
+    return (
+      <div className="flex flex-col w-full min-h-screen bg-[#F2F2F7] animate-pulse">
+        <div className="sticky top-0 z-30 bg-[#F2F2F7]/80 backdrop-blur-xl border-b border-slate-200/50 pt-12 pb-3 flex flex-col px-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1 opacity-50">
+              <div className="w-8 h-8 rounded-full bg-slate-200 ml-2" />
+              <div className="w-16 h-5 bg-slate-200 rounded-md" />
+            </div>
+            <div className="w-8 h-8 rounded-full bg-slate-200 mr-2 opacity-50" />
+          </div>
+          <div className="px-4 mt-2">
+            <div className="w-48 h-8 bg-slate-200 rounded-lg" />
+            <div className="w-32 h-4 bg-slate-200 rounded-md mt-2" />
+          </div>
+        </div>
+        <div className="px-4 pt-6 pb-24 flex flex-col gap-6">
+          <div className="bg-white rounded-[10px] shadow-sm border border-slate-200/60 p-4 h-32" />
+          <div className="bg-white rounded-[10px] shadow-sm border border-slate-200/60 p-4 h-64" />
+        </div>
+      </div>
+    );
+  }
   if (cliente === null) {
     setLocation('/');
     return null;
