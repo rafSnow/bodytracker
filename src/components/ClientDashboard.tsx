@@ -8,6 +8,7 @@ import { WeeklyWeightTracker } from './WeeklyWeightTracker';
 import { PhotoComparison } from './PhotoComparison';
 import { EvaluationDetails } from './EvaluationDetails';
 import { ExportPDFButton } from './ExportPDFButton';
+import { ExportCSVButton } from './ExportCSVButton';
 import { ArrowLeft, Plus, History } from 'lucide-react';
 import { ActionSheet } from './ActionSheet';
 import toast from 'react-hot-toast';
@@ -164,16 +165,25 @@ export function ClientDashboard({ cliente, onBack, onNewEvaluation }: ClientDash
             {(() => {
               const selectedJoined = joinedEvaluations.find(j => j.avaliacao.id === selectedAvaliacaoId);
               return (
-                <div data-html2canvas-ignore="true" className="mt-8 bg-white rounded-[10px] shadow-sm border border-slate-200/60 p-4 flex flex-col gap-3">
-                  <h3 className="text-[17px] font-semibold text-slate-900">Exportar Relatório</h3>
-                  <p className="text-[14px] text-slate-500 leading-snug">Gere um documento PDF contendo todo o histórico e os gráficos detalhados para entregar ao cliente.</p>
-                  <ExportPDFButton 
-                    cliente={cliente}
-                    avaliacao={selectedJoined?.avaliacao}
-                    resultado={selectedJoined?.resultado}
-                    fileName={`relatorio-${cliente.nome.replace(/\s+/g, '-').toLowerCase()}.pdf`} 
-                  />
-                </div>
+                <div data-html2canvas-ignore="true" className="mt-8 bg-white dark:bg-slate-900 rounded-[10px] shadow-sm border border-slate-200/60 dark:border-slate-800 p-4 flex flex-col gap-4">
+  <div>
+    <h3 className="text-[17px] font-semibold text-slate-900 dark:text-white">Exportar Dados</h3>
+    <p className="text-[14px] text-slate-500 dark:text-slate-400 leading-snug mt-1">Gere um documento PDF ou exporte o histórico completo para Excel (.csv).</p>
+  </div>
+  
+  <div className="flex flex-col gap-3">
+    <ExportPDFButton 
+      cliente={cliente}
+      avaliacao={selectedJoined?.avaliacao}
+      resultado={selectedJoined?.resultado}
+      fileName={`relatorio-${cliente.nome.replace(/\s+/g, '-').toLowerCase()}.pdf`} 
+    />
+    <ExportCSVButton 
+      evaluations={joinedEvaluations} 
+      clientName={cliente.nome} 
+    />
+  </div>
+</div>
               );
             })()}
           </>
