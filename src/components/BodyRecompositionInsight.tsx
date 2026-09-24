@@ -11,7 +11,6 @@ export function BodyRecompositionInsight({ evaluations }: BodyRecompositionInsig
     if (!evaluations || evaluations.length < 2) return null;
 
     // evaluations are sorted descending (latest first) in the dashboard
-    // so evaluations[0] is the newest, evaluations[evaluations.length - 1] is the oldest
     const newest = evaluations[0];
     const oldest = evaluations[evaluations.length - 1];
 
@@ -19,11 +18,10 @@ export function BodyRecompositionInsight({ evaluations }: BodyRecompositionInsig
     const currentWeight = newest.avaliacao.peso_kg;
     const weightDiff = currentWeight - initialWeight;
 
-    // Use BF Navy as standard for fat % if available
     const initialBf = oldest.resultado?.calculos?.bfNavy || 0;
     const currentBf = newest.resultado?.calculos?.bfNavy || 0;
 
-    if (!initialBf || !currentBf) return null; // Can't calculate fat mass without BF
+    if (!initialBf || !currentBf) return null;
 
     const initialFatMass = initialWeight * (initialBf / 100);
     const currentFatMass = currentWeight * (currentBf / 100);
@@ -50,7 +48,6 @@ export function BodyRecompositionInsight({ evaluations }: BodyRecompositionInsig
   const isLosingFat = insight.fatDiff < 0;
   const isWeightUp = insight.weightDiff > 0;
 
-  // Recomposition Logic State
   let messageTitle = "";
   let messageBody = "";
   let badgeColor = "";
@@ -85,7 +82,6 @@ export function BodyRecompositionInsight({ evaluations }: BodyRecompositionInsig
 
   return (
     <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl shadow-lg border border-slate-700 p-6 overflow-hidden relative">
-      {/* Background Graphic */}
       <div className="absolute -right-6 -top-6 opacity-10">
         <Dumbbell size={120} />
       </div>

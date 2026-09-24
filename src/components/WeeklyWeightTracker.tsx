@@ -27,7 +27,7 @@ export function WeeklyWeightTracker({ cliente }: WeeklyWeightTrackerProps) {
     // Replace comma with dot for parsing
     const parsedWeight = parseFloat(newWeight.replace(',', '.'));
     if (isNaN(parsedWeight) || parsedWeight <= 0) {
-      toast.error('Insira um peso vlido.');
+      toast.error('Insira um peso válido.');
       return;
     }
 
@@ -43,7 +43,7 @@ export function WeeklyWeightTracker({ cliente }: WeeklyWeightTrackerProps) {
         peso_kg: parsedWeight
       });
       setNewWeight('');
-      toast.success('Peso dirio registrado!');
+      toast.success('Peso diário registrado!');
     } catch (err) {
       toast.error('Erro ao salvar peso.');
     }
@@ -92,39 +92,41 @@ export function WeeklyWeightTracker({ cliente }: WeeklyWeightTrackerProps) {
           <Scale className="text-indigo-600" size={20} />
         </div>
         <div>
-          <h2 className="text-lg font-bold text-slate-800 tracking-tight">Pesagens Dirias & Mdia Semanal</h2>
+          <h2 className="text-lg font-bold text-slate-800 tracking-tight">Pesagens Diárias & Média Semanal</h2>
           <p className="text-sm text-slate-500 leading-snug">
-            S foca na mdia! O peso oscila todos os dias devido a lquidos e treinos. 
-            A mdia semanal  o nico nmero confivel.
+            Só foca na média! O peso oscila todos os dias devido a líquidos e treinos. 
+            A média semanal é o único número confiável.
           </p>
         </div>
       </div>
 
-      <form onSubmit={handleAddWeight} className="flex gap-3 items-end">
-        <div className="flex-1 flex flex-col gap-1.5">
-          <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider ml-1">Data</label>
-          <input 
-            type="date"
-            value={newDate}
-            onChange={e => setNewDate(e.target.value)}
-            className="h-12 px-3 bg-slate-50 border border-slate-200 rounded-[10px] text-[15px] focus:outline-none focus:border-indigo-400 focus:bg-white transition-colors"
-            required
-          />
+      <form onSubmit={handleAddWeight} className="flex flex-col sm:flex-row gap-3 sm:items-end">
+        <div className="flex gap-3 w-full">
+          <div className="flex-1 flex flex-col gap-1.5">
+            <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider ml-1">Data</label>
+            <input 
+              type="date"
+              value={newDate}
+              onChange={e => setNewDate(e.target.value)}
+              className="w-full h-12 px-3 bg-slate-50 border border-slate-200 rounded-[10px] text-[15px] focus:outline-none focus:border-indigo-400 focus:bg-white transition-colors"
+              required
+            />
+          </div>
+          <div className="flex-1 flex flex-col gap-1.5">
+            <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider ml-1">Peso (kg)</label>
+            <input 
+              type="text"
+              inputMode="decimal"
+              pattern="[0-9.,]*"
+              value={newWeight}
+              onChange={e => setNewWeight(e.target.value)}
+              placeholder="Ex: 72,5"
+              className="w-full h-12 px-3 bg-slate-50 border border-slate-200 rounded-[10px] text-[15px] focus:outline-none focus:border-indigo-400 focus:bg-white transition-colors"
+              required
+            />
+          </div>
         </div>
-        <div className="flex-1 flex flex-col gap-1.5">
-          <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider ml-1">Peso (kg)</label>
-          <input 
-            type="text"
-            inputMode="decimal"
-            pattern="[0-9.,]*"
-            value={newWeight}
-            onChange={e => setNewWeight(e.target.value)}
-            placeholder="Ex: 72,5"
-            className="h-12 px-3 bg-slate-50 border border-slate-200 rounded-[10px] text-[15px] focus:outline-none focus:border-indigo-400 focus:bg-white transition-colors"
-            required
-          />
-        </div>
-        <button type="submit" className="h-12 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-[15px] font-semibold rounded-[10px] transition-colors shadow-sm">
+        <button type="submit" className="w-full sm:w-auto h-12 px-5 bg-indigo-600 hover:bg-indigo-700 text-white text-[15px] font-semibold rounded-[10px] transition-colors shadow-sm shrink-0">
           Salvar
         </button>
       </form>
@@ -173,7 +175,7 @@ export function WeeklyWeightTracker({ cliente }: WeeklyWeightTrackerProps) {
       ) : (
         <div className="text-center py-8 bg-slate-50 rounded-xl border border-slate-200 border-dashed">
           <p className="text-[15px] font-medium text-slate-500 max-w-xs mx-auto">
-            Adicione sua primeira pesagem diria para comear a calcular a mdia semanal.
+            Adicione sua primeira pesagem diária para começar a calcular a média semanal.
           </p>
         </div>
       )}
@@ -182,8 +184,8 @@ export function WeeklyWeightTracker({ cliente }: WeeklyWeightTrackerProps) {
         <div className="mt-2 border-t border-slate-100 pt-4">
           <details className="group">
             <summary className="text-[13px] font-bold text-indigo-600 cursor-pointer list-none flex items-center gap-1 hover:text-indigo-700 select-none">
-              <span className="group-open:hidden text-indigo-500">+ Mostrar histrico de registros</span>
-              <span className="hidden group-open:inline text-indigo-500">- Ocultar histrico</span>
+              <span className="group-open:hidden text-indigo-500">+ Mostrar histórico de registros</span>
+              <span className="hidden group-open:inline text-indigo-500">- Ocultar histórico</span>
             </summary>
             <div className="mt-4 flex flex-col gap-1 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
               {[...pesagens].reverse().map(p => (
