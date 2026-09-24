@@ -3,6 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db, type Cliente } from '../db/db';
 import { LatestEvaluationCard, type JoinedEvaluation } from './LatestEvaluationCard';
 import { EvolutionCharts } from './EvolutionCharts';
+import { WeeklyWeightTracker } from './WeeklyWeightTracker';
 import { PhotoComparison } from './PhotoComparison';
 import { EvaluationDetails } from './EvaluationDetails';
 import { ExportPDFButton } from './ExportPDFButton';
@@ -119,6 +120,7 @@ export function ClientDashboard({ cliente, onBack, onNewEvaluation }: ClientDash
             </div>
 
             <LatestEvaluationCard evaluations={joinedEvaluations} />
+            <WeeklyWeightTracker cliente={cliente} />
             <EvolutionCharts evaluations={joinedEvaluations} />
             <PhotoComparison clienteId={cliente.id} selectedAvaliacaoId={selectedAvaliacaoId} />
 

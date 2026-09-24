@@ -50,12 +50,20 @@ export interface FotoAvaliacao {
   criado_em: Date;
 }
 
+export interface Pesagem {
+  id: string;
+  cliente_id: string;
+  data: Date;
+  peso_kg: number;
+}
+
 export class AppDatabase extends Dexie {
   profissionais!: Table<Profissional, string>;
   clientes!: Table<Cliente, string>;
   avaliacoes!: Table<Avaliacao, string>;
   resultados!: Table<Resultados, string>;
   fotos!: Table<FotoAvaliacao, string>;
+  pesagens!: Table<Pesagem, string>;
 
   constructor() {
     super('BioStatsDB');
@@ -69,6 +77,10 @@ export class AppDatabase extends Dexie {
 
     this.version(2).stores({
       fotos: 'id, avaliacao_id, cliente_id, tipo'
+    });
+
+    this.version(3).stores({
+      pesagens: 'id, cliente_id, data'
     });
   }
 }
